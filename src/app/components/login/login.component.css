@@ -1,0 +1,35 @@
+.login_div{
+  background: #D8D8D8;
+  width: 300px;
+  height: 600px;
+  float: right;
+  margin-top: 10vh;
+  margin-right: 15vh;
+}
+.logo_div{
+  margin-bottom: 0px;
+}
+.login-form {
+  margin-top: 20vh;
+  width: 300px;
+}
+
+.login-form-margin {
+  margin-bottom: 16px;
+}
+
+.login-form-forgot {
+  float: right;
+}
+
+.login-form-button {
+  width: 100%;
+}
+
+button {
+  margin-right: 8px;
+  margin-bottom: 8px;
+  width: 70px;
+  text-align: center;
+  padding: 0;
+}

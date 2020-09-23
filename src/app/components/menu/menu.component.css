@@ -1,0 +1,68 @@
+.trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.flex-row,.flex{
+  display: -webkit-flex;display: flex;
+  flex-direction: row;
+}
+.flex-col{
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+}
+.menunzlay{
+  height: 100vh;
+}
+.trigger:hover {
+  color: #1890ff;
+}
+
+.logo {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px;
+}
+
+nz-header {
+  background: #fff;
+  padding: 0;
+}
+
+nz-content {
+  height: 100vh;
+  margin: 0 16px;
+}
+
+nz-breadcrumb {
+  margin: 16px 0;
+}
+
+.inner-content {
+  height: 90vh;
+  padding: 24px;
+  background: #fff;
+  min-height: 360px;
+}
+
+nz-footer {
+  text-align: center;
+}
+
+
+/* :host ::ng-deep .ant-menu-item-selected {
+  background: linear-gradient(180deg, rgb(19, 7, 92) 0%, rgb(28, 37, 37) 100%);
+  border: 1px solid;
+  border-image: linear-gradient(180deg, rgb(13, 28, 51) 0%, rgb(36, 49, 51) 100%);
+} */
+:host ::ng-deep .ant-input{
+  width: 25%;
+  float: left;
+  margin-bottom: 10%;
+}
+:host ::ng-deep .ant-list{
+  margin-top: 10%;
+}

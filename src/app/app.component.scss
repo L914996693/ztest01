@@ -1,0 +1,21 @@
+.layout {
+min-height: 80vh;
+}
+
+nz-content {
+overflow: initial;
+}
+.flex-row,.flex{
+    display: -webkit-flex;display: flex;
+    flex-direction: row;
+}
+.flex-col{
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+}
+.inner-content {
+    height: 100vh;
+    background: #fff;
+    //text-align: center;
+}
