@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzTableModule } from 'ng-zorro-antd/table';
 
 import { LoginModule } from './components/login/login.module';
 
@@ -44,6 +45,7 @@ registerLocaleData(en);
   ],
   exports:[],
   imports: [
+    NzTableModule,
     NzTypographyModule,
     NzBreadCrumbModule,
     NzSliderModule,
