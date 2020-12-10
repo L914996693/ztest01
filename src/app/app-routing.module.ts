@@ -12,7 +12,8 @@ const routes: Routes = [
   { path: 'menu',canActivate:[AuthGuard] ,data:{breadcrumb: '用户'},  //loadChildren: () => import('./components/menu/menu.module').then(m => m.MenuModule)
     component:MenuComponent,
     children:[
-      { path: 'userlist',canActivate:[AuthGuard] ,data:{breadcrumb: '用户列表'}, loadChildren: () => import('./components/menu/user/userlist/userlist.module').then(m => m.UserlistModule) }//canActivate:[AuthGuard] ,
+      { path: 'userlist',canActivate:[AuthGuard] ,data:{breadcrumb: '用户列表'}, loadChildren: () => import('./components/menu/user/userlist/userlist.module').then(m => m.UserlistModule) },//canActivate:[AuthGuard] ,
+      { path: 'table',canActivate:[AuthGuard] ,data:{breadcrumb: '表格列表'}, loadChildren: () => import('./components/menu/table/table.module').then(m => m.TableModule) }//canActivate:[AuthGuard] ,
     ]
   },
 ];

@@ -34,12 +34,14 @@ import en from '@angular/common/locales/en';
 import { LoginComponent } from './components/login/login.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { UserlistComponent } from './components/menu/user/userlist/userlist.component';
+import { TableComponent } from './components/menu/table/table.component';
 
 
 registerLocaleData(en);
 
 @NgModule({
   declarations: [
+    TableComponent,
     AppComponent,
     LoginComponent,
     MenuComponent,

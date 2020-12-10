@@ -1,0 +1,51 @@
+
+<!-- [printStyle]="{
+  'ant-table-cell' : {'border': 'solid #000000','border-width':'1px 1px 1px 1px'},
+  'td' : {'border': 'solid #000000', 'border-width':'1px 1px 1px 0px'}
+ }" -->
+<button nz-button nzType="primary"  printSectionId ="tabledata"
+[useExistingCss] ="true"
+[printStyle]="{
+  'table' : {'border-bottom':'2px solid #000','border-top':'2px solid #000','border-left':'2px solid #000','border-right':'2px solid #000'},
+  'td' : {'border-bottom':'1px solid #000','border-top':'1px solid #000','border-left':'1px solid #000','border-right':'1px solid #000'},
+  'th' : {'border-bottom':'1px solid #000','border-top':'1px solid #000','border-left':'1px solid #000','border-right':'1px solid #000'}
+ }"
+ngxPrint>ngxPrint</button><!--z y x s-->
+<nz-table id='tabledata' style='border-color: red;' #colSpanTable [nzData]="listOfData" nzBordered='true'  nzLoading='false' nzHideOnSinglePage='true'>
+  <thead>
+    <tr>
+      <th nzAlign='left'>Name</th>
+      <th nzAlign='left'>Age</th>
+      <th nzAlign='left' colspan="2">Home phone</th>
+      <th nzAlign='left'>Address</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of colSpanTable.data; index as i">
+      <td  nzAlign='left'>{{ data.name }}</td>
+      <ng-container [ngSwitch]="i">
+        <ng-container *ngSwitchCase="2">
+          <td nzAlign='left'>{{ data.age }}</td>
+          <td nzAlign='left' rowspan="2">{{ data.tel }}</td>
+          <td nzAlign='left'>{{ data.phone }}</td>
+          <td nzAlign='left'>{{ data.address }}</td>
+        </ng-container>
+        <ng-container *ngSwitchCase="3">
+          <td nzAlign='left'>{{ data.age }}</td>
+          <td nzAlign='left'>{{ data.phone }}</td>
+          <td nzAlign='left'>{{ data.address }}</td>
+        </ng-container>
+        <ng-container *ngSwitchCase="4">
+          <td nzAlign='left' colspan="5">{{ data.age }}</td>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+          <td nzAlign='left'>{{ data.age }}</td>
+          <td nzAlign='left'>{{ data.tel }}</td>
+          <td nzAlign='left'>{{ data.phone }}</td>
+          <td nzAlign='left'>{{ data.address }}</td>
+        </ng-container>
+      </ng-container>
+    </tr>
+  </tbody>
+</nz-table>
+  
