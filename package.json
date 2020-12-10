@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
-    "build": "ng build",
+    "build": "ng build --base-href /angular-web/ --output-path E:/Apache/apache-tomcat-8.5.47/webapps/angular-web --delete-output-path=false",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

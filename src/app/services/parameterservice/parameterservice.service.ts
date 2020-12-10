@@ -6,6 +6,8 @@ import { Router,NavigationExtras } from '@angular/router';
 })
 export class ParameterserviceService {
 
+  private overallSituation_url:string = 'http://192.168.1.131:8082';
+
   private url_data:any={
     "/login":"/angular/angular/login",
     "/verlogin":"/angular/angular/verlogin",
@@ -20,7 +22,7 @@ export class ParameterserviceService {
     private router:Router,
   ) { }
   getAppUrl(str:string){
-    var data = this.url_data[str];
+    var data = this.overallSituation_url+this.url_data[str];
     return data;
   }
   
