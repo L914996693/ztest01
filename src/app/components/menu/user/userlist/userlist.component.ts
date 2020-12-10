@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgxPrintModule } from 'ngx-print';
 
 interface ItemData {
   id: number;
@@ -78,4 +79,15 @@ export class UserlistComponent implements OnInit {
       };
     });
   }
+
+  /* printcontent() {
+    const printContent = document.getElementById("rowSelectionTabledata");
+    const windowprt = window.open('','','left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
+    windowprt.document.write(printContent.innerHTML);
+    windowprt.document.close();
+    windowprt.focus();
+    windowprt.print();
+    windowprt.close();
+
+  } */
 }

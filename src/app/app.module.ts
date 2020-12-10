@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import { NgxPrintModule } from 'ngx-print';
+
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -45,6 +47,7 @@ registerLocaleData(en);
   ],
   exports:[],
   imports: [
+    NgxPrintModule,
     NzTableModule,
     NzTypographyModule,
     NzBreadCrumbModule,

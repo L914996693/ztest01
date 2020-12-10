@@ -1,5 +1,5 @@
-
-    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData" (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
+<button nz-button nzType="primary" [useExistingCss]="true" printSectionId ="rowSelectionTabledata" ngxPrint>ngxPrint</button>
+    <nz-table id="rowSelectionTabledata" #rowSelectionTable nzShowSizeChanger [nzData]="listOfData" (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
       <thead>
         <tr>
           <th
