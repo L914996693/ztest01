@@ -15,13 +15,17 @@ export class MenuComponent implements OnInit{
 
   private menuapi:string="";
 
+  private data:any = {
+    uuid:''
+  };
+
   private menudata:any={
     result:"",
     message:"",
     data:""
   };
 
-  public menulist:any=[{"childrenmenu":[{"name":"用户列表"},{"name":"新增用户"},{"name":"修改用户"}],"name":"用户"},{"childrenmenu":[{"name":"新增机构"},{"name":"修改机构"}],"name":"机构"}];
+  public menulist:any=[];
 
   constructor(
     private router:Router,
@@ -31,10 +35,12 @@ export class MenuComponent implements OnInit{
 
   ngOnInit(): void {
     this.menuapi = this.par_uarl.getAppUrl("/anmenu");
-    this.menus.getmenu(this.menuapi).subscribe((data)=>{
+    console.log(this.par_uarl.getUserKey('uuid'))
+    this.data.uuid = this.par_uarl.getUserKey('uuid');
+    this.menus.getmenu(this.menuapi,this.data).subscribe((data)=>{
       this.menudata = data;
-      console.log(this.menudata.data)
-      if(this.menudata.result=='true'){
+      console.log(this.menudata)
+      if(this.menudata.flag==true){
         this.menulist = this.menudata.data;
       }
     });

@@ -4,7 +4,7 @@
     <ul nz-menu nzTheme="dark" nzMode="inline">
       <li nz-submenu *ngFor="let item of menulist" [nzTitle]="item.name">
         <ul *ngFor="let item1 of item.childrenmenu">
-            <li nz-menu-item (click)="menuclick($event)">{{item1.name}}</li>
+            <li nz-menu-item (click)="menuclick($event)">{{item1.menuName}}</li>
         </ul>
       </li>
     </ul>

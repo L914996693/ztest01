@@ -82,6 +82,7 @@ export class LoginComponent implements OnInit {
       this.logindata = data;
       //console.log(this.logindata);
       if(this.logindata.flag==true){
+        this.par_uarl.setUserKey('uuid',this.logindata.data);
         this.authser.login(true);
         const modal = this.modal.success({
           nzTitle: '系统提示',
