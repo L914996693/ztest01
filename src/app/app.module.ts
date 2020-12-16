@@ -1,5 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 import { NgxPrintModule } from 'ngx-print';
 
@@ -49,6 +52,7 @@ registerLocaleData(en);
   ],
   exports:[],
   imports: [
+    RouterModule,
     NgxPrintModule,
     NzTableModule,
     NzTypographyModule,
@@ -72,7 +76,7 @@ registerLocaleData(en);
     HttpClientModule,
     BrowserAnimationsModule
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US },NzModalService,NzMessageService,NzIconModule],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy, },{ provide: NZ_I18N, useValue: en_US ,},NzModalService,NzMessageService,NzIconModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
