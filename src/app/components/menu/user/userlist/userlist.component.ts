@@ -1,11 +1,35 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxPrintModule } from 'ngx-print';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { NzTableLayout, NzTablePaginationPosition, NzTableSize } from 'ng-zorro-antd/table';
 
 interface ItemData {
-  id: number;
   name: string;
-  age: number;
+  age: number | string;
   address: string;
+  checked: boolean;
+  expand: boolean;
+  description: string;
+  disabled?: boolean;
+}
+
+interface Setting {
+  bordered: boolean;
+  loading: boolean;
+  pagination: boolean;
+  sizeChanger: boolean;
+  title: boolean;
+  header: boolean;
+  footer: boolean;
+  expandable: boolean;
+  checkbox: boolean;
+  fixHeader: boolean;
+  noResult: boolean;
+  ellipsis: boolean;
+  simple: boolean;
+  size: NzTableSize;
+  tableScroll: string;
+  tableLayout: NzTableLayout;
+  position: NzTablePaginationPosition;
 }
 
 @Component({
@@ -13,81 +37,91 @@ interface ItemData {
   templateUrl: './userlist.component.html'
 })
 export class UserlistComponent implements OnInit {
-  listOfSelection = [
-    {
-      text: 'Select All Row',
-      onSelect: () => {
-        this.onAllChecked(true);
-      }
-    },
-    {
-      text: 'Select Odd Row',
-      onSelect: () => {
-        this.listOfCurrentPageData.forEach((data, index) => this.updateCheckedSet(data.id, index % 2 !== 0));
-        this.refreshCheckedStatus();
-      }
-    },
-    {
-      text: 'Select Even Row',
-      onSelect: () => {
-        this.listOfCurrentPageData.forEach((data, index) => this.updateCheckedSet(data.id, index % 2 === 0));
-        this.refreshCheckedStatus();
-      }
-    }
-  ];
-  checked = false;
-  indeterminate = false;
-  listOfCurrentPageData: ItemData[] = [];
+  settingForm?: FormGroup;
   listOfData: ItemData[] = [];
-  setOfCheckedId = new Set<number>();
+  displayData: ItemData[] = [];
+  allChecked = false;
+  indeterminate = false;
+  fixedColumn = false;
+  scrollX: string | null = null;
+  scrollY: string | null = null;
+  settingValue!: Setting;
 
-  updateCheckedSet(id: number, checked: boolean): void {
-    if (checked) {
-      this.setOfCheckedId.add(id);
-    } else {
-      this.setOfCheckedId.delete(id);
+  currentPageDataChange($event: ItemData[]): void {
+    this.displayData = $event;
+    this.refreshStatus();
+  }
+
+  refreshStatus(): void {
+    const validData = this.displayData.filter(value => !value.disabled);
+    const allChecked = validData.length > 0 && validData.every(value => value.checked === true);
+    const allUnChecked = validData.every(value => !value.checked);
+    this.allChecked = allChecked;
+    this.indeterminate = !allChecked && !allUnChecked;
+  }
+
+  checkAll(value: boolean): void {
+    this.displayData.forEach(data => {
+      if (!data.disabled) {
+        data.checked = value;
+      }
+    });
+    this.refreshStatus();
+  }
+
+  generateData(): ItemData[] {
+    const data = [];
+    for (let i = 1; i <= 100; i++) {
+      data.push({
+        name: 'John Brown',
+        age: `${i}2`,
+        address: `New York No. ${i} Lake Park`,
+        description: `My name is John Brown, I am ${i}2 years old, living in New York No. ${i} Lake Park.`,
+        checked: false,
+        expand: false
+      });
     }
+    return data;
   }
 
-  onItemChecked(id: number, checked: boolean): void {
-    this.updateCheckedSet(id, checked);
-    this.refreshCheckedStatus();
-  }
-
-  onAllChecked(value: boolean): void {
-    this.listOfCurrentPageData.forEach(item => this.updateCheckedSet(item.id, value));
-    this.refreshCheckedStatus();
-  }
-
-  onCurrentPageDataChange($event: ItemData[]): void {
-    this.listOfCurrentPageData = $event;
-    this.refreshCheckedStatus();
-  }
-
-  refreshCheckedStatus(): void {
-    this.checked = this.listOfCurrentPageData.every(item => this.setOfCheckedId.has(item.id));
-    this.indeterminate = this.listOfCurrentPageData.some(item => this.setOfCheckedId.has(item.id)) && !this.checked;
-  }
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
-    this.listOfData = new Array(200).fill(0).map((_, index) => {
-      return {
-        id: index,
-        name: `Edward King ${index}`,
-        age: 32,
-        address: `London, Park Lane no. ${index}`
-      };
+    this.settingForm = this.formBuilder.group({
+      bordered: true,
+      loading: false,
+      pagination: true,
+      sizeChanger: true,
+      title: false,
+      header: true,
+      footer: false,
+      expandable: false,
+      checkbox: true,
+      fixHeader: true,
+      noResult: false,
+      ellipsis: false,
+      simple: false,
+      size: 'middle',
+      tableScroll: 'unset',
+      tableLayout: 'fixed',
+      position: 'bottom'
     });
+    this.settingValue = this.settingForm.value;
+    this.settingForm.valueChanges.subscribe(value => (this.settingValue = value));
+    this.settingForm.get('tableScroll')!.valueChanges.subscribe(scroll => {
+      this.fixedColumn = scroll === 'fixed';
+      this.scrollX = scroll === 'scroll' || scroll === 'fixed' ? '100vw' : null;
+    });
+    this.settingForm.get('fixHeader')!.valueChanges.subscribe(fixed => {
+      this.scrollY = fixed ? '240px' : null;
+    });
+    this.settingForm.get('noResult')!.valueChanges.subscribe(empty => {
+      if (empty) {
+        this.listOfData = [];
+      } else {
+        this.listOfData = this.generateData();
+      }
+    });
+    this.listOfData = this.generateData();
   }
-
-  /* printcontent() {
-    const printContent = document.getElementById("rowSelectionTabledata");
-    const windowprt = window.open('','','left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
-    windowprt.document.write(printContent.innerHTML);
-    windowprt.document.close();
-    windowprt.focus();
-    windowprt.print();
-    windowprt.close();
-
-  } */
 }

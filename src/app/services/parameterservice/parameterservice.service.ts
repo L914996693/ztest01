@@ -6,11 +6,11 @@ import { Router,NavigationExtras } from '@angular/router';
 })
 export class ParameterserviceService {
 
-  private overallSituation_url:string = 'http://192.168.1.131:8082';
+  private overallSituation_url:string = 'http://192.168.1.127:8082/agriculture';
 
   private url_data:any={
-    "/login":"/angular/angular/login",
-    "/verlogin":"/angular/angular/verlogin",
+    "/login":"/login/auth",
+    //"/verlogin":"/angular/angular/verlogin",
     "/anmenu":"/angular/anmenu/menulist"
   };
 

@@ -21,7 +21,7 @@ export class MenuComponent implements OnInit{
     data:""
   };
 
-  public menulist:any={};
+  public menulist:any=[{"childrenmenu":[{"name":"用户列表"},{"name":"新增用户"},{"name":"修改用户"}],"name":"用户"},{"childrenmenu":[{"name":"新增机构"},{"name":"修改机构"}],"name":"机构"}];
 
   constructor(
     private router:Router,
@@ -33,6 +33,7 @@ export class MenuComponent implements OnInit{
     this.menuapi = this.par_uarl.getAppUrl("/anmenu");
     this.menus.getmenu(this.menuapi).subscribe((data)=>{
       this.menudata = data;
+      console.log(this.menudata.data)
       if(this.menudata.result=='true'){
         this.menulist = this.menudata.data;
       }

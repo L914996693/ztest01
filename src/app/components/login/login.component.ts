@@ -16,8 +16,8 @@ export class LoginComponent implements OnInit {
   validateForm!: FormGroup;
 
   private peopleInfo:any={
-    username:'',
-    password:''
+    userName:'',
+    userPass:''
   }
 
   private logindata:any={
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   };
 
   private api:string="";//http://127.0.0.1:8082/angular/angular/login
-  private verapi:string="";//http://127.0.0.1:8082/angular/angular/verlogin
+  //private verapi:string="";//http://127.0.0.1:8082/angular/angular/verlogin
 
   constructor(
     private modal: NzModalService,
@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
     ) {}//
   
   ngOnInit(): void {
-    this.verapi = this.par_uarl.getAppUrl("/verlogin");
+    //this.verapi = this.par_uarl.getAppUrl("/verlogin");
     this.api = this.par_uarl.getAppUrl("/login");
 
     /* this.loginser.verlogin(this.verapi).subscribe((data)=>{
@@ -66,12 +66,12 @@ export class LoginComponent implements OnInit {
     }
     //console.log(this.validateForm.controls.userName.value);
     if(this.validateForm.controls.userName.value!=null){
-      this.peopleInfo.username = this.validateForm.controls.userName.value;
+      this.peopleInfo.userName = this.validateForm.controls.userName.value;
     }else{
       return;
     }
     if(this.validateForm.controls.password.value!=null){
-      this.peopleInfo.password = this.validateForm.controls.password.value;
+      this.peopleInfo.userPass = this.validateForm.controls.password.value;
     }else{
       return;
     }
@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit {
     this.loginser.getLogin(this.api,this.peopleInfo).subscribe((data)=>{
       this.logindata = data;
       //console.log(this.logindata);
-      if(this.logindata.login=='true'){
+      if(this.logindata.flag==true){
         this.authser.login(true);
         const modal = this.modal.success({
           nzTitle: '系统提示',

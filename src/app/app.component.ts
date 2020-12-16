@@ -25,7 +25,7 @@ export class AppComponent {
     ){}
 
   ngOnInit(): void {
-    this.verapi = this.par_uarl.getAppUrl("/verlogin");
+    /* this.verapi = this.par_uarl.getAppUrl("/verlogin");
     this.loginser.verlogin(this.verapi).subscribe((data)=>{
       this.logindata = data;
       if(this.logindata.login=='true'){
@@ -34,7 +34,7 @@ export class AppComponent {
       }else{
         this.authser.login(false);
       }
-    });
+    }); */
   }
 }
 

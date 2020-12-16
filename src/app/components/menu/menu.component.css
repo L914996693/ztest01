@@ -66,5 +66,8 @@ nz-footer {
 :host ::ng-deep .ant-list{
   margin-top: 10%;
 }
+/* :host ::ng-deep .ant-table-content { 
+  height:70vh
+} */
 /* :host ::ng-deep .ant-table-cell{border:solid #000000; border-width:1px 1px 1px 1px;} */
 /* :host ::ng-deep .ant-table-container{border:solid #000000; border-width:0px 0px 0px 1px;} */
