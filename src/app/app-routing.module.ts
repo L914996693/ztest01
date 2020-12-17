@@ -9,11 +9,12 @@ import { MenuComponent } from './components/menu/menu.component';
 const routes: Routes = [
   { path:'',pathMatch:'full',redirectTo:'login'},
   { path: 'login', loadChildren: () => import('./components/login/login.module').then(m => m.LoginModule) },
-  { path: 'menu',data:{breadcrumb: '用户'},  //loadChildren: () => import('./components/menu/menu.module').then(m => m.MenuModule),canActivate:[AuthGuard] 
+  { path: 'menu',  //loadChildren: () => import('./components/menu/menu.module').then(m => m.MenuModule),canActivate:[AuthGuard] menum
     component:MenuComponent,
     children:[
-      { path: 'userlist',canActivate:[AuthGuard] ,data:{breadcrumb: '用户列表'}, loadChildren: () => import('./components/menu/user/userlist/userlist.module').then(m => m.UserlistModule) },//canActivate:[AuthGuard] ,
-      { path: 'table',canActivate:[AuthGuard] ,data:{breadcrumb: '表格列表'}, loadChildren: () => import('./components/menu/table/table.module').then(m => m.TableModule) }//canActivate:[AuthGuard] ,
+      { path: 'user',data:{breadcrumb: '系统用户'}, loadChildren: () => import('./components/menu/permissionsetting/user/user.module').then(m => m.UserModule) },//canActivate:[AuthGuard] ,
+      { path: 'role',data:{breadcrumb: '系统角色'}, loadChildren: () => import('./components/menu/permissionsetting/role/role.module').then(m => m.RoleModule) },//canActivate:[AuthGuard] ,
+      { path: 'menum',data:{breadcrumb: '系统菜单'}, loadChildren: () => import('./components/menu/permissionsetting/menum/menum.module').then(m => m.MenumModule) }
     ]
   },
 ];

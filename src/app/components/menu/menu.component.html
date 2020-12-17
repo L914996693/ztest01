@@ -4,15 +4,15 @@
     <ul nz-menu nzTheme="dark" nzMode="inline">
       <li nz-submenu *ngFor="let item of menulist" [nzTitle]="item.name">
         <ul *ngFor="let item1 of item.childrenmenu">
-            <li nz-menu-item (click)="menuclick($event)">{{item1.menuName}}</li>
+            <li nz-menu-item  routerLink={{item1.menuUrl}} >{{item1.menuName}}</li><!--(click)="menuclick($event)"  [routerLink]="[ {{item1.menuUrl}}]" routerLinkActive="active" -->
         </ul>
       </li>
     </ul>
   </nz-sider>
   <nz-layout>
-    <!-- <nz-header>
-      <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" (click)="isCollapsed = !isCollapsed"></i>
-    </nz-header> -->
+    <nz-header>
+      <button style="float: right;margin-right: 3%;margin-top: 1%;" (click)="loginOut()" nz-button nzType="default"><i nz-icon nzType="logout"></i>退出</button>
+    </nz-header>
     <nz-content>
       <nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb>
       <!-- <nz-breadcrumb [nzAutoGenerate]="true" [nzRouteLabel]="'customBreadcrumb'"></nz-breadcrumb> -->

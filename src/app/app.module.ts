@@ -10,6 +10,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 import { LoginModule } from './components/login/login.module';
 
@@ -33,17 +35,25 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
-import en from '@angular/common/locales/en';
+import zh from '@angular/common/locales/zh';
+
 import { LoginComponent } from './components/login/login.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { UserlistComponent } from './components/menu/user/userlist/userlist.component';
 import { TableComponent } from './components/menu/table/table.component';
+import { MenumComponent } from './components/menu/permissionsetting/menum/menum.component';
+import { RoleComponent } from './components/menu/permissionsetting/role/role.component';
+import { UserComponent } from './components/menu/permissionsetting/user/user.component';
 
 
-registerLocaleData(en);
+registerLocaleData(zh);
 
 @NgModule({
   declarations: [
+    UserComponent,
+    RoleComponent,
+    MenumComponent,
+    
     TableComponent,
     AppComponent,
     LoginComponent,
@@ -52,7 +62,10 @@ registerLocaleData(en);
   ],
   exports:[],
   imports: [
+    NzIconModule,
     RouterModule,
+    NzModalModule,
+    NzDatePickerModule,
     NgxPrintModule,
     NzTableModule,
     NzTypographyModule,
@@ -76,7 +89,7 @@ registerLocaleData(en);
     HttpClientModule,
     BrowserAnimationsModule
   ],
-  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy, },{ provide: NZ_I18N, useValue: en_US ,},NzModalService,NzMessageService,NzIconModule],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy, },NzModalService,NzMessageService,NzIconModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

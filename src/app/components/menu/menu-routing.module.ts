@@ -8,7 +8,7 @@ import { MenuComponent } from './menu.component';
 const routes: Routes = [
   { 
     path:'',data: {
-      breadcrumb: '用户'
+      breadcrumb: '首页'
     },component:MenuComponent,
     /* children:[
       { path: 'userlist',canActivate:[AuthGuard] ,data:{breadcrumb: 'Second'}, loadChildren: () => import('../userlist/userlist.module').then(m => m.UserlistModule) }//canActivate:[AuthGuard] ,

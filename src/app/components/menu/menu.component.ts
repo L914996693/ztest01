@@ -46,8 +46,12 @@ export class MenuComponent implements OnInit{
     });
     
   }
+
+  loginOut(){
+    this.router.navigate(['/login']);
+  }
   
-  menuclick(e){
+  /* menuclick(e){
     switch (e.toElement.innerText) {
       case "用户列表":
           //console.log(e.toElement.innerText)
@@ -62,5 +66,5 @@ export class MenuComponent implements OnInit{
           break; 
     }
     //console.log(e.toElement.innerText);
-  }
+  } */
 }
