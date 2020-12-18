@@ -1,20 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
-import { ParameterserviceService } from '../../services/parameterservice/parameterservice.service';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MenuService {
+export class RoleserviceService {
 
-  constructor(
-    private http:HttpClientModule,
-    private httpclient:HttpClient,
-  ) { }
+  constructor(private http:HttpClientModule,private httpclient:HttpClient) { }
 
-  getmenu(api:string,data:any){
+  //校验重复角色
+  getRoleFindName(api:string,data:any){
     return new Observable((observer)=>{
       // post请求时需要额外设置请求头
       const httpOptions = {
@@ -26,6 +23,5 @@ export class MenuService {
         observer.next(resp);
       })
     });
-    
   }
 }

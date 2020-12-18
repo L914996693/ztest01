@@ -11,9 +11,10 @@ export class ParameterserviceService {
   private user_key:string = '';
 
   private url_data:any={
-    "/login":"/login/auth",
+    "/login":"/login/auth",//登录接口
     //"/verlogin":"/angular/angular/verlogin",
-    "/anmenu":"/login/queryLeftMenu"
+    "/anmenu":"/login/queryLeftMenu",//菜单接口
+    "/userfindname":"/user/queryName"//查询用户接口
   };
 
   private tarurl:any={
@@ -35,5 +36,5 @@ export class ParameterserviceService {
   getUserKey(key:string){
     return JSON.parse(localStorage.getItem(key));
   }
-  
+
 }

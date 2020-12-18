@@ -12,9 +12,12 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 import { LoginModule } from './components/login/login.module';
 
+import { NzSelectModule } from 'ng-zorro-antd';
+import { NzDividerModule } from 'ng-zorro-antd';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
@@ -62,6 +65,9 @@ registerLocaleData(zh);
   ],
   exports:[],
   imports: [
+    NzDividerModule,
+    NzSelectModule,
+    NzDropDownModule,
     NzIconModule,
     RouterModule,
     NzModalModule,
@@ -89,7 +95,7 @@ registerLocaleData(zh);
     HttpClientModule,
     BrowserAnimationsModule
   ],
-  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy, },NzModalService,NzMessageService,NzIconModule],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy, },NzModalService,NzMessageService,NzIconModule,NzDropDownModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

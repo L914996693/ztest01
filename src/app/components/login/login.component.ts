@@ -64,7 +64,6 @@ export class LoginComponent implements OnInit {
       this.validateForm.controls[i].markAsDirty();
       this.validateForm.controls[i].updateValueAndValidity();
     }
-    //console.log(this.validateForm.controls.userName.value);
     if(this.validateForm.controls.userName.value!=null){
       this.peopleInfo.userName = this.validateForm.controls.userName.value;
     }else{
@@ -80,7 +79,6 @@ export class LoginComponent implements OnInit {
 
     this.loginser.getLogin(this.api,this.peopleInfo).subscribe((data)=>{
       this.logindata = data;
-      //console.log(this.logindata);
       if(this.logindata.flag==true){
         this.par_uarl.setUserKey('uuid',this.logindata.data);
         this.authser.login(true);
