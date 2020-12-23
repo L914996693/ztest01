@@ -12,9 +12,13 @@ export class ParameterserviceService {
 
   private url_data:any={
     "/login":"/login/auth",//登录接口
+    "/loginOut":"/login/loginout",//登出接口
+    "/rolelist":"/role/query",//角色列表查询
+    "/usersave":"/user/addsave",//
     //"/verlogin":"/angular/angular/verlogin",
     "/anmenu":"/login/queryLeftMenu",//菜单接口
-    "/userfindname":"/user/queryName"//查询用户接口
+    "/userfindname":"/user/queryName",//查询用户接口
+    "/userlist":"/user/query",//查询用户列表
   };
 
   private tarurl:any={

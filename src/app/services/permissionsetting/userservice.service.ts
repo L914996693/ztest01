@@ -69,4 +69,18 @@ export class UserserviceService {
     });
   }
 
+  //获取角色列表
+  getRoleList(api:string){
+    return new Observable((observer)=>{
+      // post请求时需要额外设置请求头
+      const httpOptions = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        };
+      // 默认接收json的返回值，返回字符串时报错
+      this.httpclient.post(api, httpOptions).subscribe(resp=>{
+        observer.next(resp);
+      })
+    });
+  }
+
 }

@@ -56,7 +56,6 @@ registerLocaleData(zh);
     UserComponent,
     RoleComponent,
     MenumComponent,
-    
     TableComponent,
     AppComponent,
     LoginComponent,

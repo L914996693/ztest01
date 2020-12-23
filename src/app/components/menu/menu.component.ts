@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, Directive } from '@angular/core';
 import { Router,NavigationExtras } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { AuthService } from '../../auth/auth.service';
 
 import { MenuService } from '../../services/menu/menu.service';
 import { ParameterserviceService } from '../../services/parameterservice/parameterservice.service';
@@ -41,6 +42,7 @@ export class MenuComponent implements OnInit{
     private par_uarl:ParameterserviceService,
     private loginsev:LoginserviceService,
     private message: NzMessageService,
+    private authser:AuthService,
   ){}
 
   ngOnInit(): void {
@@ -56,17 +58,18 @@ export class MenuComponent implements OnInit{
   }
 
   loginOut(){
-    this.createMessage('success');
-    /* var loginout_api = this.par_uarl.getAppUrl('');
+    //this.createMessage('success');
+    var loginout_api = this.par_uarl.getAppUrl('/loginOut');
     this.loginsev.logOut(loginout_api,this.par_uarl.getUserKey('uuid')).subscribe((data)=>{
       this.logOutdata = data;
       if(this.logOutdata.flag==true){
+        this.authser.login(false);
         this.createMessage('success');
         this.router.navigate(['/login']);
       }else{
         this.createMessage('error');
       }
-    }); */
+    });
   }
 
   createMessage(type: string): void {

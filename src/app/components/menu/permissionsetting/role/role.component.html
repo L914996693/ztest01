@@ -64,9 +64,9 @@
                 <td>{{ data.rolename }}</td>
                 <td [nzEllipsis]="false">{{ data.roleinfo }}</td>
                 <td [nzEllipsis]="false" nzAlign="center">
-                  <a nz-button nzType="link" (click)="roleFind(data.age)">编辑</a>
+                  <a nz-button nzType="link" (click)="roleFind(data.rolename)">编辑</a>
                   <nz-divider nzType="vertical"></nz-divider>
-                  <a nz-button nzType="link" (click)="delRole(data.age)">删除</a>
+                  <a nz-button nzType="link" (click)="delRole(data.rolename)">删除</a>
                 </td>
               </tr>
             </ng-container>

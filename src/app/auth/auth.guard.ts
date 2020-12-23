@@ -20,7 +20,6 @@ export class AuthGuard implements CanActivate ,CanActivateChild{
       //console.log('AuthGuard#canActivate called');
       //return true;
       let url: string = state.url;
-
       return this.checkLogin(url);
   }
 

@@ -211,4 +211,8 @@ export class RoleComponent implements OnInit {
     }  */
   }
 
+  refresh(){
+    window.location.reload();
+  }
+
 }
