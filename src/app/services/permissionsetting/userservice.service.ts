@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
+import { HttpParams } from "@angular/common/http";
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -42,13 +43,20 @@ export class UserserviceService {
   //获取指定用户信息
   getUserFind(api:string,data:any){
     return new Observable((observer)=>{
-      // post请求时需要额外设置请求头
-      const httpOptions = {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-        //,'withCredentials': 'true'
-        };
+        const params = new HttpParams({fromString: 'userId='+data});
       // 默认接收json的返回值，返回字符串时报错
-      this.httpclient.post(api, data, httpOptions).subscribe(resp=>{
+      this.httpclient.get(api,{params}).subscribe(resp=>{
+        observer.next(resp);
+      })
+    });
+  }
+
+  //删除用户
+  getUserDel(api:string,data:any){
+    return new Observable((observer)=>{
+        const params = new HttpParams({fromString: 'userId='+data});
+      // 默认接收json的返回值，返回字符串时报错
+      this.httpclient.get(api,{params}).subscribe(resp=>{
         observer.next(resp);
       })
     });

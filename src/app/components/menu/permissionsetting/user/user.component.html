@@ -10,7 +10,7 @@
       <nz-form-item>
         <nz-form-label [nzSpan]="isHorizontal ? 4 : null">创建时间</nz-form-label>
         <nz-form-control [nzSpan]="isHorizontal ? 14 : null">
-          <nz-range-picker nzShowTime formControlName="rangePicker"></nz-range-picker>
+          <nz-range-picker formControlName="rangePicker"></nz-range-picker>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item style="margin-left: 2%;">
@@ -84,7 +84,7 @@
 <div>
   <nz-modal
     [(nzVisible)]="isVisible"
-    nzTitle="新增用户"
+    nzTitle="编辑用户"
     nzClosable='true'
     nzFooter='ModalButtonOptions'
     nzOkText=""
@@ -183,8 +183,9 @@
           nzPlaceHolder="请选择..."
           (ngModelChange)="genderChange($event)"
         >
-          <nz-option nzValue="1" nzLabel="可用"></nz-option>
-          <nz-option nzValue="0" nzLabel="禁用"></nz-option>
+          <nz-option *ngFor="let option of genderlist" [nzLabel]="option.userStateName" [nzValue]="option.userStateId"></nz-option>
+          <!-- <nz-option nzValue="1" nzLabel="可用"></nz-option>
+          <nz-option nzValue="0" nzLabel="禁用"></nz-option> -->
         </nz-select>
       </nz-form-control>
     </nz-form-item>
@@ -201,121 +202,3 @@
   </div>
   </nz-modal>
 </div>
-
-<!-- 编辑修改用户 -->
-<!-- <div>
-  <nz-modal
-    [(nzVisible)]="isVisible"
-    nzTitle="编辑用户"
-    nzClosable='true'
-    nzFooter='ModalButtonOptions'
-    nzOkText=""
-    nzCancelText=""
-    (nzOnOk)="uphandleOk()"
-    (nzOnCancel)="uphandleCancel()"
-    nzWidth="50%"
-  >
-  
-  <form nz-form id='userupdateform' [formGroup]="UpdateUservalidateForm" (ngSubmit)="submitFormUpdateUser(UpdateUservalidateForm.value)">
-    <nz-form-item>
-      <nz-form-label [nzSpan]="7" nzRequired>用户名称</nz-form-label>
-      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="userErrorTpl">
-        <input nz-input formControlName="userName" placeholder="请输入用户名" />
-        <ng-template #userErrorTpl let-control>
-          <ng-container *ngIf="control.hasError('required')">
-            请输入用户名
-          </ng-container>
-          <ng-container *ngIf="control.hasError('duplicated')">
-            用户名重复
-          </ng-container>
-        </ng-template>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSpan]="7" nzRequired>手机号</nz-form-label>
-      <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="phoneErrorTpl">
-        <input nz-input id="phoneNumber" formControlName="userPhone" placeholder="请输入手机号" maxlength="11"/>
-        <ng-template #phoneErrorTpl let-control>
-          <ng-container *ngIf="control.hasError('required')">
-            输入的手机号无效!
-          </ng-container>
-          <ng-container *ngIf="control.hasError('duplicated')">
-            请输入手机号!
-          </ng-container>
-        </ng-template>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSpan]="7" nzRequired>E-mail</nz-form-label>
-      <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="emailErrorTpl">
-        <input nz-input formControlName="email" placeholder="邮箱" type="email" />
-        <ng-template #emailErrorTpl let-control>
-          <ng-container *ngIf="control.hasError('email')">
-            输入的电子邮件无效!
-          </ng-container>
-          <ng-container *ngIf="control.hasError('required')">
-            请输入E-mail!
-          </ng-container>
-        </ng-template>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSpan]="7" nzRequired>密码</nz-form-label>
-      <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="请输入密码!">
-        <input nz-input type="password" formControlName="password" placeholder="清输入密码" (ngModelChange)="validateConfirmPassword()" />
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSpan]="7" nzRequired>再次输入密码</nz-form-label>
-      <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="passwordErrorTpl">
-        <input nz-input type="password" formControlName="confirm" placeholder="确认密码" />
-        <ng-template #passwordErrorTpl let-control>
-          <ng-container *ngIf="control.hasError('required')">
-            请确认您的密码!
-          </ng-container>
-          <ng-container *ngIf="control.hasError('confirm')">
-            密码不一致!
-          </ng-container>
-        </ng-template>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSpan]="7" nzRequired>角色权限</nz-form-label>
-      <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="请选择角色!">
-        <nz-select
-          id="role"
-          formControlName="role"
-          nzPlaceHolder="请选择..."
-          (ngModelChange)="roleChange($event)"
-        >
-          <nz-option *ngFor="let option of rolelist" [nzLabel]="option.roleName" [nzValue]="option.roleId"></nz-option>
-        </nz-select>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSpan]="7" nzRequired>禁用状态</nz-form-label>
-      <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="请选择禁用状态!">
-        <nz-select
-          id="gender"
-          formControlName="gender"
-          nzPlaceHolder="请选择..."
-          (ngModelChange)="genderChange($event)"
-        >
-          <nz-option nzValue="1" nzLabel="可用"></nz-option>
-          <nz-option nzValue="0" nzLabel="禁用"></nz-option>
-        </nz-select>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSpan]="7">备注</nz-form-label>
-      <nz-form-control [nzSpan]="12">
-        <textarea formControlName="comment" nz-input rows="2" placeholder="备注信息..."></textarea>
-      </nz-form-control>
-    </nz-form-item>
-  </form>
-  <div *nzModalFooter>
-    <button nz-button nzType="default" (click)="uphandleCancel()">取消</button>
-    <button nz-button nzType="primary" type="submit" form="userupdateform" >提交</button>
-  </div>
-  </nz-modal>
-</div> -->

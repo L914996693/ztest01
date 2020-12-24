@@ -21,24 +21,19 @@ export class UserComponent implements OnInit {
   listOfData:any=[];
 
   rolelist: Array<{ roleName: string; roleId: string }> = [];
-  /* [
+  
+  genderlist: Array<{ userStateName: string; userStateId: any }> = [
     {
-      roleId:'1',
-      roleName:'admin'
+      userStateName:'启用',
+      userStateId:1
     },
     {
-      roleId:'2',
-      roleName:'student'
-    },
-    {
-      roleId:'3',
-      roleName:'测试用'
-    },
-    {
-      roleId:'4',
-      roleName:'超级管理员'
-    },
-  ]; */
+      userStateName:'禁用',
+      userStateId:0
+    }
+  ];
+
+  //genderstate : 0;
 
   userlist:any={
     userName: "",
@@ -52,20 +47,7 @@ export class UserComponent implements OnInit {
     userName:''
   };
 
-  private userID:any={
-    userId:''
-  };
-
-  private initialUserData:any={
-    id:'testid',
-    comment: "这是备注",
-    confirm: "asdasd",
-    email: "2590997646@qq.com",
-    gender: "0",
-    password: "asdasd",
-    role: "3",
-    userName: "test",
-  }
+  private initialUserDataid:string = '';
 
   private userReData:any={};
 
@@ -98,7 +80,7 @@ export class UserComponent implements OnInit {
     if(this.validateForm.value.rangePicker!=null){
       this.userlist.createTime = this.validateForm.value.rangePicker
       for(let i=0;i<this.userlist.createTime.length;i++){
-        this.userlist.createTime[i] = this.datePipe.transform(this.userlist.createTime[i],"yyyy-MM-dd HH:mm:ss");
+        this.userlist.createTime[i] = this.datePipe.transform(this.userlist.createTime[i],"yyyy-MM-dd");
       }
     }
     if(this.userlist.userName!=null){
@@ -149,7 +131,6 @@ export class UserComponent implements OnInit {
     
     this.usersv.getUserList(this.par_url.getAppUrl('/userlist'),this.userlist).subscribe((data)=>{
       this.userReData = data;
-      console.log(this.userReData);
       if(this.userReData.flag==true){
         if(this.userReData.data==null){
           this.userlist.pageindex = 0;
@@ -159,7 +140,6 @@ export class UserComponent implements OnInit {
           this.userlist.pageindex = this.userReData.data.pageNum == null? 0 : this.userReData.data.pageNum;//当前页
           this.userlist.total = this.userReData.data.total == null? 0 : this.userReData.data.total;//总条目数
           this.listOfData = this.userReData.data.list == null? [] : this.userReData.data.list;//数据集
-          console.log(this.userReData);
         }
       }else{
         //弹出失败消息提示-及原因
@@ -179,14 +159,6 @@ export class UserComponent implements OnInit {
   adduser(): void {
     this.isVisible = true;
     this.getRolelist();
-    this.initialUserData.userName = '';
-    this.initialUserData.password = '';
-    this.initialUserData.confirm = '';
-    this.initialUserData.comment = '';
-    this.initialUserData.email = '';
-    this.initialUserData.gender = '';
-    this.initialUserData.role = '';
-    this.initialUserData.id = '';
   }
   handleOk(): void {
     this.isVisible = false;
@@ -203,17 +175,8 @@ export class UserComponent implements OnInit {
 
   //新增-修改用户form
   submitFormaddUser(value: { userName: string; email: string; password: string; confirm: string; comment: string ;role :string; gender: string; userPhone: string}): void {
-    //console.log(value)
-    /* this.initialUserData.userName = value.userName;
-    this.initialUserData.password = value.password;
-    this.initialUserData.confirm = value.confirm;
-    this.initialUserData.comment = value.comment;
-    this.initialUserData.email = value.email;
-    this.initialUserData.gender = value.gender;
-    this.initialUserData.role = value.role; */
-
-    //console.log(this.initialUserData);
     var userJson={
+      userId : this.initialUserDataid,//id
       userName : value.userName,//账号
       userPass : value.password,//用户密码
       nickName : value.userName,//用户名称
@@ -223,11 +186,14 @@ export class UserComponent implements OnInit {
       userEmail : value.email,//邮箱
       userState : value.gender//禁用状态
     }
-    console.log(userJson)
+    console.log(value.userName)
+    if(value.userName == '' || value.password == '' || value.role == '' || value.userPhone == '' || value.email == '' || value.gender == '' || value.confirm == ''){
+      this.message.create('error', `请检查录入信息`);
+      return ;
+    }
     //连接后端
     this.usersv.getAddUser(this.par_url.getAppUrl('/usersave'),userJson).subscribe((data)=>{
       this.userReData = data;
-      console.log(this.userReData)
       if(this.userReData.flag==true){
         //关闭弹出层并显示消息提示
         this.isVisible = false;
@@ -235,7 +201,8 @@ export class UserComponent implements OnInit {
           this.addUservalidateForm.controls[key].markAsDirty();
           this.addUservalidateForm.controls[key].updateValueAndValidity();
         } 
-        this.message.create('success', `保存用户信息成功`);
+        this.message.create('success', `编辑用户信息成功`);
+        this.userFromList();
       }else{
         //弹出失败消息提示-及原因
         this.message.create('error', this.userReData.message);
@@ -310,39 +277,44 @@ export class UserComponent implements OnInit {
 
     //删除用户
     delUser(userid:string){
-      console.log("删除--用户ID--->"+userid)
+      this.usersv.getUserDel(this.par_url.getAppUrl('/deluser'),userid).subscribe((data)=>{
+        this.userReData = data;
+        if(this.userReData.flag==true){
+          this.message.create('success', `删除用户信息成功`);
+          this.userFromList();
+        }else{
+
+        }
+      });
     }
 
     //编辑--查看
     userFind(userid:string){
-      //console.log("编辑--用户ID--->"+userid);
       //获取用户数据并反显
-     /*  var finduser_url = this.par_url.getAppUrl('');
-      this.userID.userId = userid;
-      this.usersv.getUserFind(this.userfindurl,this.userID).subscribe((data)=>{
+      this.usersv.getUserFind(this.par_url.getAppUrl('/userfind'),userid).subscribe((data)=>{
         this.userReData = data;
         if(this.userReData.flag==true){
+          this.getRolelist();
           //显示弹出层并给--initialUserData赋值
+          this.initialUserDataid = this.userReData.data.userId;
+          //测试代码块
+          this.addUservalidateForm.patchValue(
+            {
+              userName:this.userReData.data.userName,
+              userPhone:this.userReData.data.userPhone,
+              email:this.userReData.data.userEmail,
+              password:this.userReData.data.userPass,
+              confirm:this.userReData.data.userPass,
+              comment:this.userReData.data.userInfo,
+              gender:this.userReData.data.userState,
+              role:this.userReData.data.roleId, 
+            }
+          )
+          this.isVisible = true;
         }else{
           //弹出消息提示
         }
-      }); */
-
-      //测试代码块
-      /* this.addUservalidateForm.patchValue(
-        {
-          userName:this.initialUserData.userName,
-          email:this.initialUserData.email,
-          password:this.initialUserData.password,
-          confirm:this.initialUserData.confirm,
-          comment:this.initialUserData.comment,
-          gender:this.initialUserData.gender,
-          role:this.initialUserData.role,
-        }
-      ) */
-
-      this.isVisible = true;
-
+      });
     }
 
   //获取角色列表
