@@ -1,9 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
+//cnpm install ngx-print
 import { NgxPrintModule } from 'ngx-print';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -33,7 +34,7 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule,HttpClientJsonpModule } from '@angular/common/http';
+import { HttpClientModule,HttpClientJsonpModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
@@ -42,11 +43,12 @@ import zh from '@angular/common/locales/zh';
 
 import { LoginComponent } from './components/login/login.component';
 import { MenuComponent } from './components/menu/menu.component';
-import { UserlistComponent } from './components/menu/user/userlist/userlist.component';
-import { TableComponent } from './components/menu/table/table.component';
 import { MenumComponent } from './components/menu/permissionsetting/menum/menum.component';
 import { RoleComponent } from './components/menu/permissionsetting/role/role.component';
 import { UserComponent } from './components/menu/permissionsetting/user/user.component';
+import { FiterCodeLengthPipePipe } from './services/parameterservice/fiter-code-length-pipe.pipe';
+import { NoopInterceptorInterceptor } from './services/parameterservice/noop-interceptor.interceptor';
+import { ParameterserviceService } from './services/parameterservice/parameterservice.service';
 
 
 registerLocaleData(zh);
@@ -56,13 +58,12 @@ registerLocaleData(zh);
     UserComponent,
     RoleComponent,
     MenumComponent,
-    TableComponent,
     AppComponent,
     LoginComponent,
     MenuComponent,
-    UserlistComponent,
+    FiterCodeLengthPipePipe,
   ],
-  exports:[],
+  exports:[FiterCodeLengthPipePipe],
   imports: [
     NzDividerModule,
     NzSelectModule,
@@ -94,7 +95,7 @@ registerLocaleData(zh);
     HttpClientModule,
     BrowserAnimationsModule
   ],
-  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy, },NzModalService,NzMessageService,NzIconModule,NzDropDownModule],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy, },NzModalService,NzMessageService,NzIconModule,NzDropDownModule,ParameterserviceService,{provide:HTTP_INTERCEPTORS,useClass:NoopInterceptorInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

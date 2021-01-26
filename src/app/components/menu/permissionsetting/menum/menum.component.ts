@@ -6,7 +6,6 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { DatePipe } from '@angular/common';
 
 import { ParameterserviceService } from '../../../../services/parameterservice/parameterservice.service';
-import { MenumserviceService } from '../../../../services/permissionsetting/menumservice.service';
 
 @Component({
   selector: 'app-menum',
@@ -73,7 +72,6 @@ export class MenumComponent implements OnInit {
     private par_url: ParameterserviceService,
     private datePipe: DatePipe,
     private message: NzMessageService,
-    private menusev: MenumserviceService,
   ) { 
     //弹出新增表单初始化
     this.addEditvalidateForm = this.fb.group({
@@ -171,7 +169,7 @@ export class MenumComponent implements OnInit {
 
   //菜单编辑按钮
   menuFind(menuid:string){
-    this.menusev.getMenuGet(this.par_url.getAppUrl('/menufind'),'menuId='+menuid).subscribe((data)=>{
+    this.par_url.Parameter_Get(this.par_url.getAppUrl('/menufind'),'menuId='+menuid).subscribe((data)=>{
       this.menuRsData = data;
       if(this.menuRsData.flag==true){
         //获取的编辑菜单ID
@@ -195,7 +193,7 @@ export class MenumComponent implements OnInit {
 
   //删除菜单按钮
   delMenu(menuid:string){
-    this.menusev.getMenuGet(this.par_url.getAppUrl('/delmenu'),'menuId='+menuid).subscribe((data)=>{
+    this.par_url.Parameter_Get(this.par_url.getAppUrl('/delmenu'),'menuId='+menuid).subscribe((data)=>{
       this.menuRsData = data;
       if(this.menuRsData.flag==true){
         this.message.create('success', `删除菜单信息成功`);
@@ -248,7 +246,7 @@ export class MenumComponent implements OnInit {
     }
     //判断ID是否存在
     if(this.initialUserDataid == ""){//添加
-      this.menusev.getMenu(this.par_url.getAppUrl('/menusave'),menu_json).subscribe((data)=>{
+      this.par_url.Parameter_Post(this.par_url.getAppUrl('/menusave'),menu_json).subscribe((data)=>{
         this.menuRsData = data;
         if(this.menuRsData.flag==true){
           for (const key in this.addEditvalidateForm.controls) {
@@ -266,7 +264,7 @@ export class MenumComponent implements OnInit {
         }
       });
     }else{//修改
-      this.menusev.getMenu(this.par_url.getAppUrl('/menuupdate'),menu_json).subscribe((data)=>{
+      this.par_url.Parameter_Post(this.par_url.getAppUrl('/menuupdate'),menu_json).subscribe((data)=>{
         this.menuRsData = data;
         if(this.menuRsData.flag==true){
           for (const key in this.addEditvalidateForm.controls) {
@@ -292,7 +290,7 @@ export class MenumComponent implements OnInit {
     new Observable((observer: Observer<ValidationErrors | null>) => {
       this.menuName.menuName=control.value;
       setTimeout(() => {
-        this.menusev.getMenu(this.par_url.getAppUrl('/menufinename'),this.menuName).subscribe((data)=>{
+        this.par_url.Parameter_Post(this.par_url.getAppUrl('/menufinename'),this.menuName).subscribe((data)=>{
           this.menuRsData = data;
           if(this.menuRsData.flag==false){
             observer.next({ error: true, duplicated: true });
@@ -309,7 +307,7 @@ export class MenumComponent implements OnInit {
   new Observable((observer: Observer<ValidationErrors | null>) => {
     this.menuUrl.menuUrl=control.value;
     setTimeout(() => {
-      this.menusev.getMenu(this.par_url.getAppUrl('/menufindurl'),this.menuUrl).subscribe((data)=>{
+      this.par_url.Parameter_Post(this.par_url.getAppUrl('/menufindurl'),this.menuUrl).subscribe((data)=>{
         this.menuRsData = data;
         if(this.menuRsData.flag==false){
           observer.next({ error: true, duplicated: true });
@@ -323,7 +321,7 @@ export class MenumComponent implements OnInit {
 
   //获取菜单列表
   getMenuList(){
-    this.menusev.getMenu(this.par_url.getAppUrl('/menulist'),this.menulist).subscribe((data)=>{
+    this.par_url.Parameter_Post(this.par_url.getAppUrl('/menulist'),this.menulist).subscribe((data)=>{
       this.menuRsData = data;
       if(this.menuRsData.flag==true){
         if(this.menuRsData.data==null){
@@ -343,7 +341,7 @@ export class MenumComponent implements OnInit {
 
   //获取一级菜单列表
   getFirstMenuList(){
-    this.menusev.getMenuGet(this.par_url.getAppUrl('/menufirstlist'),'').subscribe((data)=>{
+    this.par_url.NoVal_Get(this.par_url.getAppUrl('/menufirstlist')).subscribe((data)=>{
       this.menuRsData = data;
       if(this.menuRsData.flag==true){
         for(let i = 0;i<this.menuRsData.data.length;i++){

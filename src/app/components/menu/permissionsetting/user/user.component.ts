@@ -4,9 +4,10 @@ import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } fro
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { DatePipe } from '@angular/common';
+import { FiterCodeLengthPipePipe }  from '../../../../services/parameterservice/fiter-code-length-pipe.pipe';
 
 import { ParameterserviceService } from '../../../../services/parameterservice/parameterservice.service';
-import { UserserviceService } from '../../../../services/permissionsetting/userservice.service';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 
 @Component({
@@ -102,9 +103,9 @@ export class UserComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private par_url:ParameterserviceService,
-    private usersv:UserserviceService,
     private datePipe:DatePipe,
     private message: NzMessageService,
+    private http:HttpClient
     ) {
     this.addUservalidateForm = this.fb.group({
       userName: ['', [Validators.required], [this.userNameAsyncValidator]],//[this.userNameAsyncValidator]
@@ -128,18 +129,18 @@ export class UserComponent implements OnInit {
 
   //获取用户列表
   userFromList(){
-    
-    this.usersv.getUserList(this.par_url.getAppUrl('/userlist'),this.userlist).subscribe((data)=>{
+    this.par_url.Parameter_Post(this.par_url.getAppUrl('/userlist'),this.userlist).subscribe((data)=>{
       this.userReData = data;
+      console.log(this.userReData)
       if(this.userReData.flag==true){
         if(this.userReData.data==null){
           this.userlist.pageindex = 0;
           this.userlist.total = 0;
           this.listOfData = [];
         }else{
-          this.userlist.pageindex = this.userReData.data.pageNum == null? 0 : this.userReData.data.pageNum;//当前页
+          this.userlist.pageindex = this.userReData.data.current == null? 0 : this.userReData.data.current;//当前页
           this.userlist.total = this.userReData.data.total == null? 0 : this.userReData.data.total;//总条目数
-          this.listOfData = this.userReData.data.list == null? [] : this.userReData.data.list;//数据集
+          this.listOfData = this.userReData.data.records == null? [] : this.userReData.data.records;//数据集
         }
       }else{
         //弹出失败消息提示-及原因
@@ -192,7 +193,7 @@ export class UserComponent implements OnInit {
       return ;
     }
     //连接后端
-    this.usersv.getAddUser(this.par_url.getAppUrl('/usersave'),userJson).subscribe((data)=>{
+    this.par_url.Parameter_Post(this.par_url.getAppUrl('/usersave'),userJson).subscribe((data)=>{
       this.userReData = data;
       if(this.userReData.flag==true){
         //关闭弹出层并显示消息提示
@@ -245,7 +246,7 @@ export class UserComponent implements OnInit {
     new Observable((observer: Observer<ValidationErrors | null>) => {
       this.userName.userName=control.value;
       setTimeout(() => {
-        this.usersv.getUserFindName(this.userfindurl,this.userName).subscribe((data)=>{
+        this.par_url.Parameter_Post(this.userfindurl,this.userName).subscribe((data)=>{
           this.userReData = data;
           if(this.userReData.flag==false){
             observer.next({ error: true, duplicated: true });
@@ -277,7 +278,7 @@ export class UserComponent implements OnInit {
 
     //删除用户
     delUser(userid:string){
-      this.usersv.getUserDel(this.par_url.getAppUrl('/deluser'),userid).subscribe((data)=>{
+      this.par_url.Parameter_Post(this.par_url.getAppUrl('/deluser'),userid).subscribe((data)=>{
         this.userReData = data;
         if(this.userReData.flag==true){
           this.message.create('success', `删除用户信息成功`);
@@ -291,7 +292,7 @@ export class UserComponent implements OnInit {
     //编辑--查看
     userFind(userid:string){
       //获取用户数据并反显
-      this.usersv.getUserFind(this.par_url.getAppUrl('/userfind'),userid).subscribe((data)=>{
+      this.par_url.Parameter_Get(this.par_url.getAppUrl('/userfind'),'username='+userid).subscribe((data)=>{
         this.userReData = data;
         if(this.userReData.flag==true){
           this.getRolelist();
@@ -319,7 +320,7 @@ export class UserComponent implements OnInit {
 
   //获取角色列表
   getRolelist(){
-    this.usersv.getRoleList(this.par_url.getAppUrl('/rolelist')).subscribe((data)=>{
+    this.par_url.Parameter_Post(this.par_url.getAppUrl('/rolelist'),'').subscribe((data)=>{
       this.userReData = data;
       if(this.userReData.flag==true){
         for(let i = 0;i<this.userReData.data.length;i++){

@@ -64,10 +64,10 @@
       <ng-container *ngFor="let data of dynamicTable.data index as i">
         <tr>
           <td nzAlign="center">{{i+1}}</td>
-          <td>{{ data.userName }}</td>
-          <td>{{ data.userPhone }}</td>
-          <td>{{ data.userEmail }}</td>
-          <td [nzEllipsis]="false">{{ data.nickName }}</td>
+          <td>{{ data.username }}</td>
+          <td>{{ data.phoneNumber }}</td>
+          <td>{{ data.email }}</td>
+          <td [nzEllipsis]="false">{{ data.userExplain | fiterCodeLengthPipe:true:16}}</td>
           <td [nzEllipsis]="false" nzAlign="center">
             <a nz-button nzType="link" (click)="userFind(data.userId)">编辑</a>
             <nz-divider nzType="vertical"></nz-divider>

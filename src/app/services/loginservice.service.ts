@@ -16,7 +16,12 @@ export class LoginserviceService {
     return new Observable((observer)=>{
       // post请求时需要额外设置请求头
       const httpOptions = {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        headers: new HttpHeaders({ 
+          'Content-Type': 'application/json' ,
+          //'Access-Control-Allow-Credentials':'true',
+          //'withCredentials': 'true'
+        }),
+        //"withCredentials": true
         //,'withCredentials': 'true'
         };
       // 默认接收json的返回值，返回字符串时报错
@@ -33,8 +38,10 @@ export class LoginserviceService {
       const httpOptions = {
         headers: new HttpHeaders({ 
           'Content-Type': 'application/json' ,
+          'Access-Control-Allow-Credentials':'true',
+          'withCredentials': 'true'
         }),
-        //"withCredentials": true
+        "withCredentials": true
         //withCredentials: true  {'withCredentials':true} 跨域获取sessionid
         };
       // 默认接收json的返回值，返回字符串时报错

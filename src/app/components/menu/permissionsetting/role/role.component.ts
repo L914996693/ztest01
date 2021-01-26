@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, Observer } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 
-import { RoleserviceService } from '../../../../services/permissionsetting/roleservice.service'
 import { DatePipe } from '@angular/common';
 
 import { ParameterserviceService } from '../../../../services/parameterservice/parameterservice.service';
@@ -63,7 +62,6 @@ export class RoleComponent implements OnInit {
     private fb: FormBuilder,
     private parutill: ParameterserviceService,
     private datePipe: DatePipe,
-    private rolesev: RoleserviceService,
     ) { 
       //初始化新增角色role
       this.addRolevalidateForm = this.fb.group({
@@ -170,7 +168,7 @@ export class RoleComponent implements OnInit {
     new Observable((observer: Observer<ValidationErrors | null>) => {
       this.roleName.roleName=control.value;
       setTimeout(() => {
-        this.rolesev.getRoleFindName(this.parutill.getAppUrl(''),this.roleName).subscribe((data)=>{
+        this.parutill.Parameter_Post(this.parutill.getAppUrl(''),this.roleName).subscribe((data)=>{
           this.roleReData = data;
           if(this.roleReData.flag==false){
             observer.next({ error: true, duplicated: true });

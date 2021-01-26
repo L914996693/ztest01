@@ -3,9 +3,12 @@ import { Router,NavigationExtras } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { AuthService } from '../../auth/auth.service';
 
-import { MenuService } from '../../services/menu/menu.service';
 import { ParameterserviceService } from '../../services/parameterservice/parameterservice.service';
 import { LoginserviceService } from '../../services/loginservice.service';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { throwError } from 'rxjs';
+import { catchError, map, retry, tap } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-menu',
@@ -38,22 +41,36 @@ export class MenuComponent implements OnInit{
 
   constructor(
     private router:Router,
-    private menus:MenuService,
     private par_uarl:ParameterserviceService,
     private loginsev:LoginserviceService,
     private message: NzMessageService,
     private authser:AuthService,
+    private http:HttpClient
   ){}
 
   ngOnInit(): void {
-    this.menuapi = this.par_uarl.getAppUrl("/anmenu");
-    this.data.uuid = this.par_uarl.getUserKey('uuid');
-    this.menus.getmenu(this.menuapi,this.data).subscribe((data)=>{
+    this.menuapi = this.par_uarl.getAppUrl("/menu");
+    //this.data.uuid = this.par_uarl.getUserKey('uuid');
+    /* const httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': "Bearer "+this.par_uarl.getUserKey('token'),'Access-Control-Allow-Credentials':'true'}),
+      };
+    this.http.get(this.menuapi,httpOptions).pipe(catchError(this.handleError)).subscribe((res:any)=>{
+      console.log(res)
+      if(res.flag==true){
+        this.message.create('success', '登陆成功');
+        this.menulist = res.data;
+      }else{
+        this.message.create('error', '登陆失败');
+      }
+    }); */
+    this.par_uarl.NoVal_Get(this.menuapi).subscribe((data)=>{//,this.data
+      console.log(data)
       this.menudata = data;
       if(this.menudata.flag==true){
         this.menulist = this.menudata.data;
       }
     });
+    
     
   }
 
@@ -85,7 +102,6 @@ export class MenuComponent implements OnInit{
         break;
     }
   }
-  
   /* menuclick(e){
     switch (e.toElement.innerText) {
       case "用户列表":
@@ -102,4 +118,22 @@ export class MenuComponent implements OnInit{
     }
     //console.log(e.toElement.innerText);
   } */
+
+  private handleError(error: HttpErrorResponse) {
+    //console.log(error)
+    //console.log(ErrorEvent)
+    //console.log(error.error)
+    //console.log(error.error.errorMsg);
+    //alert(error.error.errorMsg)
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      //console.error('An error occurred:', error.error.message);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong,
+      //console.error(`Backend returned code ${error.status}, body was: ${error.error}`);
+    }
+    // return an observable with a user-facing error message
+    return throwError('Something bad happened; please try again later.');
+  };
 }

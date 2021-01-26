@@ -1,28 +1,23 @@
 <nz-layout class="menunzlay">
-  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+  <nz-sider nzCollapsible nzBreakpoint="lg" [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
     <div class="logo"></div>
     <ul nz-menu nzTheme="dark" nzMode="inline">
       <li nz-submenu *ngFor="let item of menulist" [nzTitle]="item.name">
         <ul *ngFor="let item1 of item.childrenmenu">
-            <li nz-menu-item  routerLink={{item1.menuUrl}} >{{item1.menuName}}</li><!--(click)="menuclick($event)"  [routerLink]="[ {{item1.menuUrl}}]" routerLinkActive="active" -->
+            <li nz-menu-item  routerLink={{item1.menuUrl}} >{{item1.menuName}}</li>
         </ul>
       </li>
     </ul>
   </nz-sider>
   <nz-layout>
     <nz-header>
+      <i style="float: left;" class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" (click)="isCollapsed = !isCollapsed"></i>
       <button style="float: right;margin-right: 3%;margin-top: 1%;" (click)="loginOut()" nz-button nzType="default"><i nz-icon nzType="logout"></i>退出</button>
     </nz-header>
     <nz-content>
       <nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb>
-      <!-- <nz-breadcrumb [nzAutoGenerate]="true" [nzRouteLabel]="'customBreadcrumb'"></nz-breadcrumb> -->
-      <!-- <nz-breadcrumb>
-        <nz-breadcrumb-item>User</nz-breadcrumb-item>
-        <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
-      </nz-breadcrumb> -->
-      <div class="inner-content">
+      <div class="inner-content" style="overflow-y: scroll;">
         <router-outlet></router-outlet>
-       <!--  Bill is a cat. -->
       </div>
     </nz-content>
     <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
