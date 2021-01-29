@@ -12,6 +12,7 @@ import { catchError, map, retry, tap } from 'rxjs/operators';
 export class ParameterserviceService {
 
   private overallSituation_url:string = 'http://192.168.1.107:8800';
+  //private overallSituation_url:string = 'http://192.168.1.110:8800';
   //private overallSituation_url:string = 'http://192.168.1.127:8082/agriculture';
 
   private user_key:string = '';
@@ -21,26 +22,34 @@ export class ParameterserviceService {
   private url_data:any={
     "/login":"/oauth/token",//登录接口
     "/loginOut":"/login/loginout",//登出接口
-    "/rolelist":"/role/query",//角色列表查询
-    "/usersave":"/user/addsave",//添加用户接口
+    "/rolelist":"/consumer/rolequery",//角色列表查询
+    "/usersave":"/consumer/useradd",//添加用户接口
     "/userupdate":"/user/editsave",//添加用户接口
     //"/verlogin":"/angular/angular/verlogin",
-    "/anmenu":"/login/queryLeftMenu",//菜单接口
-    "/userfindname":"/user/queryName",//查询用户接口
+    "/menu":"/consumer/menulist",//菜单接口
+    "/userfindname":"/consumer/usercheckrepeat",//查询用户接口
     "/userlist":"/consumer/userquery",//查询用户列表
     "/userfind":"/consumer/userfind",//修改用户-查询
-    "/deluser":"/user/delete",//删除用户
-    "/menufindurl":"/menu/queryUrl",//菜单地址校验接口
-    "/menufinename":"/menu/queryName",//菜单名称校验接口
-    "/menulist":"/menu/query",//菜单列表查询接口
-    "/menufind":"/menu/getById",//修改菜单-查询
-    "/menusave":"/menu/addsave",//添加菜单接口
+    "/userroletrans":"/consumer/disroleuser",//用户-分配角色-获取全部角色
+    "/roleusersub":"/consumer/disroleusersub",//用户-分配角色-提交
+    "/deluser":"/consumer/userdelete",//删除用户
+    "/menufindurl":"/consumer/menuurlcheckrepeat",//菜单地址校验接口
+    "/menufinename":"/consumer/menucheckrepeat",//菜单名称校验接口
+    "/menulist":"/consumer/menuquery",//菜单列表查询接口
+    "/menufind":"/consumer/menufind",//修改菜单-查询
+    "/menusave":"/consumer/menuadd",//添加菜单接口
     "/menuupdate":"/menu/editsave",//菜单修改接口
-    "/delmenu":"/menu/delete",//菜单删除接口
-    "/menufirstlist":"/menu/queryFirstMenu",//一级菜单接口
+    "/delmenu":"/consumer/menudelete",//菜单删除接口
+    "/menufirstlist":"/consumer/firstquery",//一级菜单接口
+    "/menuroletreelist":"/consumer/rmenutree",//角色功能-分配菜单-获取全部菜单树
+    "/menuroletreesub":"/consumer/rmenudistrib",//角色功能-分配菜单-提交
+    "/roleaddmod":"/consumer/roleadd",//角色新增&修改接口
+    "/roledel":"/consumer/roledelete",//角色删除
+    "/rolefind":"/consumer/rolefind",//角色编辑查询
+    "/rpermissionsub":"/consumer/rpermissionsave",//角色功能--分配权限-提交
+    "/rolename":"/consumer/rolecheckrepeat",//角色功能-新增角色-角色名称查重
+    "/roletranslist":"/consumer/rpermission",//角色功能--分配权限--获取穿梭框数据
 
-    //测试
-    "/menu":"/consumer/menulist",
   };
 
   private tarurl:any={
@@ -66,6 +75,11 @@ export class ParameterserviceService {
   //获取Token
   getUserKey(key:string){
     return JSON.parse(localStorage.getItem(key));
+  }
+
+  //删除Token
+  deltUserKey(key:string){
+    localStorage.removeItem(key);
   }
 
   //Get携带参数

@@ -52,6 +52,13 @@ nz-footer {
   text-align: center;
 }
 
+.ant-menu-item-selected:focus {
+  outline: none;
+}
+.ant-menu-item:focus{
+  outline: none;
+}
+
 
 /* :host ::ng-deep .ant-menu-item-selected {
   background: linear-gradient(180deg, rgb(19, 7, 92) 0%, rgb(28, 37, 37) 100%);

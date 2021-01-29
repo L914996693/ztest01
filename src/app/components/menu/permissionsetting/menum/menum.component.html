@@ -1,101 +1,169 @@
-<div>
-    <div>
-        <form style="margin-bottom: 1%;margin-top: 1%;margin-left: 2%;" nz-form nzLayout="inline" [formGroup]="menuvalidateForm" (ngSubmit)="menusubmitForm()">
-            <nz-form-item>
-              <nz-form-label [nzSpan]="isHorizontal ? 4 : null">菜单名称</nz-form-label>
-              <nz-form-control [nzSpan]="isHorizontal ? 14 : null">
-                <input style="width: 200px;" nz-input formControlName="menuName" placeholder="角色名称" />
-              </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-              <nz-form-label [nzSpan]="isHorizontal ? 4 : null">创建时间</nz-form-label>
-              <nz-form-control [nzSpan]="isHorizontal ? 14 : null">
-                <nz-range-picker formControlName="rangePicker"></nz-range-picker>
-              </nz-form-control>
-            </nz-form-item>
-            <nz-form-item style="margin-left: 2%;">
-              <nz-form-control [nzSpan]="isHorizontal ? 14 : null" [nzOffset]="isHorizontal ? 4 : null">
-                <button nz-button nzType="primary" >查询</button>
-              </nz-form-control>
-            </nz-form-item>
-            <nz-form-item style="margin-left: 2%;">
-              <nz-form-control [nzSpan]="isHorizontal ? 14 : null" [nzOffset]="isHorizontal ? 4 : null">
-                <button nz-button nzType="primary" (click)="resetForm($event)" >重置</button>
-              </nz-form-control>
-            </nz-form-item>
-            <nz-form-item style="margin-left: 2%;">
-              <nz-form-control [nzSpan]="isHorizontal ? 14 : null" [nzOffset]="isHorizontal ? 4 : null">
-                <button nz-button nzType="primary" type="button" (click)="addmenu()">新增</button>
-              </nz-form-control>
-            </nz-form-item>
-          </form>
-    </div>
+<nz-spin [nzSpinning]="isSpinning" [nzDelay]="500">
+  <div>
+      <div>
+          <form style="margin-bottom: 1%;margin-top: 1%;margin-left: 2%;" nz-form nzLayout="inline" [formGroup]="menuvalidateForm" (ngSubmit)="menusubmitForm()">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="isHorizontal ? 4 : null">菜单名称</nz-form-label>
+                <nz-form-control [nzSpan]="isHorizontal ? 14 : null">
+                  <input style="width: 200px;" nz-input formControlName="menuName" placeholder="菜单名称" />
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                <nz-form-label [nzSpan]="isHorizontal ? 4 : null">创建时间</nz-form-label>
+                <nz-form-control [nzSpan]="isHorizontal ? 14 : null">
+                  <nz-range-picker formControlName="rangePicker"></nz-range-picker>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item style="margin-left: 2%;">
+                <nz-form-control [nzSpan]="isHorizontal ? 14 : null" [nzOffset]="isHorizontal ? 4 : null">
+                  <button nz-button nzType="primary" >查询</button>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item style="margin-left: 2%;">
+                <nz-form-control [nzSpan]="isHorizontal ? 14 : null" [nzOffset]="isHorizontal ? 4 : null">
+                  <button nz-button nzType="primary" (click)="resetForm($event)" >重置</button>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item style="margin-left: 2%;">
+                <nz-form-control [nzSpan]="isHorizontal ? 14 : null" [nzOffset]="isHorizontal ? 4 : null">
+                  <button nz-button nzType="primary" type="button" (click)="addmenu()">新增</button>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item style="margin-left: 2%;">
+                <nz-form-control [nzSpan]="isHorizontal ? 14 : null" [nzOffset]="isHorizontal ? 4 : null">
+                  <button nz-button nzType="primary" type="button" (click)="addfirstmenu()">新增一级菜单</button>
+                </nz-form-control>
+              </nz-form-item>
+            </form>
+      </div>
 
-    <div>
-        <nz-table id="rowSelectionTabledata" 
-        #dynamicTable
-        [nzScroll]="{ y: '500px' }"
-        [nzData]="listOfData"
-        nzTableLayout="fixed"
-        [nzBordered]="true"
-        nzPaginationPosition="bottom"
-        [nzShowSizeChanger]="true"
-        [nzFrontPagination]="true"
-        [nzShowPagination]="true"
-        nzSize="middle"
-        [nzFrontPagination]='false'
-        [nzTotal]='menulist.total'
-        [nzPageIndex]='menulist.pageindex'
-        [nzPageSize]='menulist.pagesize'
-        (nzPageIndexChange)='pageIndexChange($event)'
-        (nzPageSizeChange)='pageSizeChange($event)'
-        >
-          <thead>
-            <tr *ngIf="true">
-              <th nzWidth='1.5%' nzAlign="center">序号</th>
-              <th nzWidth='10%'>菜单名称</th>
-              <th nzWidth='10%'>菜单地址</th>
-              <th nzWidth='10%'>菜单说明</th>
-              <th nzWidth='5%' nzAlign="center">操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngFor="let data of dynamicTable.data index as i">
-              <tr>
-                <td nzAlign="center">{{i+1}}</td>
-                <td>{{ data.menuName }}</td>
-                <td>{{ data.menuUrl }}</td>
-                <td [nzEllipsis]="false">{{ data.menuInfo }}</td>
-                <td [nzEllipsis]="false" nzAlign="center">
-                  <a nz-button nzType="link" (click)="menuFind(data.menuId)">编辑</a>
-                  <nz-divider nzType="vertical"></nz-divider>
-                  <a nz-button nzType="link" (click)="delMenu(data.menuId)">删除</a>
-                </td>
+      <div>
+          <nz-table id="rowSelectionTabledata" 
+          #dynamicTable
+          [nzScroll]="{ y: '500px' }"
+          [nzData]="listOfData"
+          nzTableLayout="fixed"
+          [nzBordered]="true"
+          nzPaginationPosition="bottom"
+          [nzShowSizeChanger]="true"
+          [nzFrontPagination]="true"
+          [nzShowPagination]="true"
+          nzSize="middle"
+          [nzFrontPagination]='false'
+          [nzTotal]='menulist.total'
+          [nzPageIndex]='menulist.pageindex'
+          [nzPageSize]='menulist.pagesize'
+          (nzPageIndexChange)='pageIndexChange($event)'
+          (nzPageSizeChange)='pageSizeChange($event)'
+          >
+            <thead>
+              <tr *ngIf="true">
+                <th nzWidth='1.5%' nzAlign="center">序号</th>
+                <th nzWidth='10%'>菜单名称</th>
+                <th nzWidth='10%'>菜单地址</th>
+                <th nzWidth='10%'>菜单说明</th>
+                <th nzWidth='5%' nzAlign="center">操作</th>
               </tr>
-            </ng-container>
-          </tbody>
-        </nz-table>
-    </div>
-</div>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let data of dynamicTable.data index as i">
+                <tr>
+                  <td nzAlign="center">{{i+1}}</td>
+                  <td>{{ data.menuName }}</td>
+                  <td>{{ data.menuUrl }}</td>
+                  <td [nzEllipsis]="false">{{ data.menuInfo }}</td>
+                  <td [nzEllipsis]="false" nzAlign="center">
+                    <a nz-button nzType="link" (click)="menuFind(data.menuId)">编辑</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a nz-button nzType="link" (click)="delMenu(data.menuId)">删除</a>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </nz-table>
+      </div>
+  </div>
 
-<!-- 新增&编辑菜单弹窗 -->
-<div>
-    <nz-modal
-      [(nzVisible)]="isVisible"
+  <!-- 新增&编辑菜单弹窗 -->
+  <div>
+      <nz-modal
+        [(nzVisible)]="isVisible"
+        nzTitle="编辑菜单"
+        nzClosable='true'
+        nzFooter='ModalButtonOptions'
+        nzOkText=""
+        nzCancelText=""
+        (nzOnOk)="handleOk()"
+        (nzOnCancel)="handleCancel()"
+        nzWidth="50%"
+      >
+      
+      <form nz-form id='addEditvalidateForm' [formGroup]="addEditvalidateForm" (ngSubmit)="submitFormaddEdit(addEditvalidateForm.value)">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="7" nzRequired>菜单名称</nz-form-label>
+          <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="menuNameErrorTpl">
+            <input nz-input formControlName="menuName" placeholder="请输入菜单名" />
+            <ng-template #menuNameErrorTpl let-control>
+              <ng-container *ngIf="control.hasError('required')">
+                请输入菜单名
+              </ng-container>
+              <ng-container *ngIf="control.hasError('duplicated')">
+                菜单名重复
+              </ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="7" nzRequired>菜单地址</nz-form-label>
+          <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="menuUrlErrorTpl">
+            <input nz-input formControlName="menuUrl" placeholder="请输入菜单地址" />
+            <ng-template #menuUrlErrorTpl let-control>
+              <ng-container *ngIf="control.hasError('required')">
+                请输入菜单地址
+              </ng-container>
+              <ng-container *ngIf="control.hasError('duplicated')">
+                菜单地址重复
+              </ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="7">菜单归属</nz-form-label>
+          <nz-form-control [nzSpan]="12" nzHasFeedback>
+            <nz-select
+              id="genderascription"
+              formControlName="genderascription"
+              nzPlaceHolder="请选择..."
+            >
+              <nz-option *ngFor="let option of genderAscription" [nzLabel]="option.menuName" [nzValue]="option.menuId"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+      <div *nzModalFooter>
+        <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+        <button nz-button nzType="primary" type="submit" [disabled]="disabled" form="addEditvalidateForm" >提交</button>
+      </div>
+      </nz-modal>
+  </div>
+  <!-- 新增一级菜单 -->
+  <div>
+  <nz-modal
+      [(nzVisible)]="firstMisVisible"
       nzTitle="编辑菜单"
       nzClosable='true'
       nzFooter='ModalButtonOptions'
       nzOkText=""
       nzCancelText=""
-      (nzOnOk)="handleOk()"
-      (nzOnCancel)="handleCancel()"
+      (nzOnOk)="firstMhandleOk()"
+      (nzOnCancel)="firstMhandleCancel()"
       nzWidth="50%"
     >
     
-    <form nz-form id='addEditvalidateForm' [formGroup]="addEditvalidateForm" (ngSubmit)="submitFormaddEdit(addEditvalidateForm.value)">
+    <form nz-form id='addfirstMEditvalidateForm' [formGroup]="addfirstMEditvalidateForm" (ngSubmit)="submitfirstMFormaddEdit(addfirstMEditvalidateForm.value)">
       <nz-form-item>
         <nz-form-label [nzSpan]="7" nzRequired>菜单名称</nz-form-label>
-        <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="menuNameErrorTpl">
+        <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="等候校验..." [nzErrorTip]="menuNameErrorTpl">
           <input nz-input formControlName="menuName" placeholder="请输入菜单名" />
           <ng-template #menuNameErrorTpl let-control>
             <ng-container *ngIf="control.hasError('required')">
@@ -107,54 +175,11 @@
           </ng-template>
         </nz-form-control>
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSpan]="7">菜单地址</nz-form-label>
-        <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="menuUrlErrorTpl">
-          <input nz-input formControlName="menuUrl" placeholder="请输入菜单地址" />
-          <ng-template #menuUrlErrorTpl let-control>
-            <ng-container *ngIf="control.hasError('required')">
-              请输入菜单地址
-            </ng-container>
-            <ng-container *ngIf="control.hasError('duplicated')">
-              菜单地址重复
-            </ng-container>
-          </ng-template>
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSpan]="7" nzRequired>菜单等级</nz-form-label>
-        <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="请选择菜单等级!">
-          <nz-select
-            id="gender"
-            formControlName="gender"
-            nzPlaceHolder="请选择..."
-          >
-            <nz-option *ngFor="let option of genderlist" [nzLabel]="option.menuLeveName" [nzValue]="option.menuLeveId"></nz-option>
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSpan]="7">菜单归属</nz-form-label>
-        <nz-form-control [nzSpan]="12" nzHasFeedback>
-          <nz-select
-            id="genderascription"
-            formControlName="genderascription"
-            nzPlaceHolder="请选择..."
-          >
-            <nz-option *ngFor="let option of genderAscription" [nzLabel]="option.menuName" [nzValue]="option.menuId"></nz-option>
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSpan]="7">备注</nz-form-label>
-        <nz-form-control [nzSpan]="12">
-          <textarea formControlName="comment" nz-input rows="2" placeholder="备注信息..."></textarea>
-        </nz-form-control>
-      </nz-form-item>
     </form>
     <div *nzModalFooter>
-      <button nz-button nzType="default" (click)="handleCancel()">取消</button>
-      <button nz-button nzType="primary" type="submit" form="addEditvalidateForm" >提交</button>
+      <button nz-button nzType="default" (click)="firstMhandleCancel()">取消</button>
+      <button nz-button nzType="primary" type="submit" [disabled]="!addfirstMEditvalidateForm.valid" form="addfirstMEditvalidateForm" >提交</button>
     </div>
     </nz-modal>
   </div>
+</nz-spin>

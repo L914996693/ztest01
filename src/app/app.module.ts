@@ -17,8 +17,11 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 import { LoginModule } from './components/login/login.module';
 
-import { NzSelectModule } from 'ng-zorro-antd';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzDividerModule } from 'ng-zorro-antd';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzTransferModule } from 'ng-zorro-antd/transfer';
+import { NzTreeModule } from 'ng-zorro-antd/tree';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
@@ -65,6 +68,9 @@ registerLocaleData(zh);
   ],
   exports:[FiterCodeLengthPipePipe],
   imports: [
+    NzSpinModule,
+    NzTreeModule,
+    NzTransferModule,
     NzDividerModule,
     NzSelectModule,
     NzDropDownModule,
@@ -95,7 +101,7 @@ registerLocaleData(zh);
     HttpClientModule,
     BrowserAnimationsModule
   ],
-  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy, },NzModalService,NzMessageService,NzIconModule,NzDropDownModule,ParameterserviceService,{provide:HTTP_INTERCEPTORS,useClass:NoopInterceptorInterceptor, multi: true}],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy, },NzModalService,NzMessageService,NzSelectModule,NzIconModule,NzDropDownModule,ParameterserviceService,{provide:HTTP_INTERCEPTORS,useClass:NoopInterceptorInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

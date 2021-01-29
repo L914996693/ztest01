@@ -1,134 +1,195 @@
-<div>
-    <div>
-        <form style="margin-bottom: 1%;margin-top: 1%;margin-left: 2%;" nz-form nzLayout="inline" [formGroup]="roqvalidateForm" (ngSubmit)="submitForm()">
-            <nz-form-item>
-              <nz-form-label [nzSpan]="isHorizontal ? 4 : null">角色名称</nz-form-label>
-              <nz-form-control [nzSpan]="isHorizontal ? 14 : null">
-                <input style="width: 200px;" nz-input formControlName="roleName" placeholder="角色名称" />
-              </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-              <nz-form-label [nzSpan]="isHorizontal ? 4 : null">创建时间</nz-form-label>
-              <nz-form-control [nzSpan]="isHorizontal ? 14 : null">
-                <nz-range-picker formControlName="rangePicker"></nz-range-picker>
-              </nz-form-control>
-            </nz-form-item>
-            <nz-form-item style="margin-left: 2%;">
-              <nz-form-control [nzSpan]="isHorizontal ? 14 : null" [nzOffset]="isHorizontal ? 4 : null">
-                <button nz-button nzType="primary" >查询</button>
-              </nz-form-control>
-            </nz-form-item>
-            <nz-form-item style="margin-left: 2%;">
-              <nz-form-control [nzSpan]="isHorizontal ? 14 : null" [nzOffset]="isHorizontal ? 4 : null">
-                <button nz-button nzType="primary" (click)="resetForm($event)" >重置</button>
-              </nz-form-control>
-            </nz-form-item>
-            <nz-form-item style="margin-left: 2%;">
-              <nz-form-control [nzSpan]="isHorizontal ? 14 : null" [nzOffset]="isHorizontal ? 4 : null">
-                <button nz-button nzType="primary" type="button" (click)="adduser()">新增</button>
-              </nz-form-control>
-            </nz-form-item>
-          </form>
-    </div>
+<nz-spin [nzSpinning]="isSpinning" [nzDelay]="500">
+  <div>
+      <div>
+          <form style="margin-bottom: 1%;margin-top: 1%;margin-left: 2%;" nz-form nzLayout="inline" [formGroup]="roqvalidateForm" (ngSubmit)="submitForm()">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="isHorizontal ? 4 : null">角色名称</nz-form-label>
+                <nz-form-control [nzSpan]="isHorizontal ? 14 : null">
+                  <input style="width: 200px;" nz-input formControlName="roleName" placeholder="角色名称" />
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item style="margin-left: 2%;">
+                <nz-form-control [nzSpan]="isHorizontal ? 14 : null" [nzOffset]="isHorizontal ? 4 : null">
+                  <button nz-button nzType="primary" >查询</button>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item style="margin-left: 2%;">
+                <nz-form-control [nzSpan]="isHorizontal ? 14 : null" [nzOffset]="isHorizontal ? 4 : null">
+                  <button nz-button nzType="primary" (click)="resetForm($event)" >重置</button>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item style="margin-left: 2%;">
+                <nz-form-control [nzSpan]="isHorizontal ? 14 : null" [nzOffset]="isHorizontal ? 4 : null">
+                  <button nz-button nzType="primary" type="button" (click)="adduser()">新增</button>
+                </nz-form-control>
+              </nz-form-item>
+            </form>
+      </div>
 
-    <div>
-        <nz-table id="rowSelectionTabledata" 
-        #dynamicTable
-        [nzScroll]="{ y: '500px' }"
-        [nzData]="listOfData"
-        nzTableLayout="fixed"
-        [nzBordered]="true"
-        nzPaginationPosition="bottom"
-        [nzShowSizeChanger]="true"
-        [nzFrontPagination]="true"
-        [nzShowPagination]="true"
-        nzSize="middle"
-        [nzFrontPagination]='false'
-        [nzTotal]='rolelist.total'
-        [nzPageIndex]='rolelist.pageindex'
-        [nzPageSize]='rolelist.pagesize'
-        (nzPageIndexChange)='pageIndexChange($event)'
-        (nzPageSizeChange)='pageSizeChange($event)'
-        ><!-- (nzCurrentPageDataChange)="currentPageDataChange($event)" -->
-          <thead>
-            <tr *ngIf="true">
-              <th nzWidth='1.5%' nzAlign="center">序号</th>
-              <th nzWidth='10%'>角色名称</th>
-              <th nzWidth='10%'>角色名称说明</th>
-              <th nzWidth='5%' nzAlign="center">操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngFor="let data of dynamicTable.data index as i">
-              <tr>
-                <td nzAlign="center">{{i+1}}</td>
-                <td>{{ data.rolename }}</td>
-                <td [nzEllipsis]="false">{{ data.roleinfo }}</td>
-                <td [nzEllipsis]="false" nzAlign="center">
-                  <a nz-button nzType="link" (click)="roleFind(data.rolename)">编辑</a>
-                  <nz-divider nzType="vertical"></nz-divider>
-                  <a nz-button nzType="link" (click)="delRole(data.rolename)">删除</a>
-                </td>
+      <div>
+          <nz-table id="rowSelectionTabledata" 
+          #dynamicTable
+          [nzScroll]="{ y: '500px' }"
+          [nzData]="listOfData"
+          nzTableLayout="fixed"
+          [nzBordered]="true"
+          nzPaginationPosition="bottom"
+          [nzShowSizeChanger]="true"
+          [nzFrontPagination]="true"
+          [nzShowPagination]="true"
+          nzSize="middle"
+          [nzFrontPagination]='false'
+          [nzTotal]='rolelist.total'
+          [nzPageIndex]='rolelist.pageindex'
+          [nzPageSize]='rolelist.pagesize'
+          (nzPageIndexChange)='pageIndexChange($event)'
+          (nzPageSizeChange)='pageSizeChange($event)'
+          ><!-- (nzCurrentPageDataChange)="currentPageDataChange($event)" -->
+            <thead>
+              <tr *ngIf="true">
+                <th nzWidth='1.5%' nzAlign="center">序号</th>
+                <th nzWidth='10%'>角色名称</th>
+                <th nzWidth='10%'>角色名称说明</th>
+                <th nzWidth='5%' nzAlign="center">操作</th>
               </tr>
-            </ng-container>
-          </tbody>
-        </nz-table>
-    </div>
-</div>
-
-<!-- 新增&修改@角色 -->
-<div>
-    <nz-modal
-    [(nzVisible)]="isVisible"
-    nzTitle="新增角色"
-    nzClosable='true'
-    nzFooter='ModalButtonOptions'
-    nzOkText=""
-    nzCancelText=""
-    (nzOnOk)="handleOk()"
-    (nzOnCancel)="handleCancel()"
-    nzWidth="50%"
-  >
-  
-  <form nz-form id='roleaddform' [formGroup]="addRolevalidateForm" (ngSubmit)="submitFormaddUser(addRolevalidateForm.value)">
-    <nz-form-item>
-      <nz-form-label [nzSpan]="7" nzRequired>角色名称</nz-form-label>
-      <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="userErrorTpl">
-        <input nz-input formControlName="roleName" placeholder="请输入用户名" />
-        <ng-template #userErrorTpl let-control>
-          <ng-container *ngIf="control.hasError('required')">
-            请输入用户名
-          </ng-container>
-          <ng-container *ngIf="control.hasError('duplicated')">
-            用户名重复
-          </ng-container>
-        </ng-template>
-      </nz-form-control>
-    </nz-form-item>
-
-    <nz-form-item>
-      <nz-form-label [nzSpan]="7" nzRequired>禁用状态</nz-form-label>
-      <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="请选择禁用状态!">
-        <nz-select
-          id="gender"
-          formControlName="gender"
-          nzPlaceHolder="请选择..."
-        >
-          <nz-option nzValue="1" nzLabel="可用"></nz-option>
-          <nz-option nzValue="0" nzLabel="禁用"></nz-option>
-        </nz-select>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSpan]="7">说明</nz-form-label>
-      <nz-form-control [nzSpan]="12">
-        <input formControlName="comment" nz-input rows="2" placeholder="说明信息"/>
-      </nz-form-control>
-    </nz-form-item>
-  </form>
-  <div *nzModalFooter>
-    <button nz-button nzType="default" (click)="handleCancel()">取消</button>
-    <button nz-button nzType="primary" type="submit" form="roleaddform" >提交</button>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let data of dynamicTable.data index as i">
+                <tr>
+                  <td nzAlign="center">{{i+1}}</td>
+                  <td>{{ data.roleCode }}</td>
+                  <td [nzEllipsis]="false">{{ data.roleNamezh }}</td>
+                  <td [nzEllipsis]="false" nzAlign="center">
+                    <a nz-button nzType="link" (click)="roleFind(data.roleId)">编辑</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger='click' (click)='downRole(data.roleId)'>
+                      其他操作
+                      <i nz-icon nzType="down"></i>
+                    </a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a nz-button nzType="link" (click)="delRole(data.roleId)">删除</a>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </nz-table>
+      </div>
   </div>
-  </nz-modal>
-</div>
+
+  <!-- 新增&修改@角色 -->
+  <div>
+      <nz-modal
+      [(nzVisible)]="isVisible"
+      nzTitle="新增角色"
+      nzClosable='true'
+      nzFooter='ModalButtonOptions'
+      nzOkText=""
+      nzCancelText=""
+      (nzOnOk)="handleOk()"
+      (nzOnCancel)="handleCancel()"
+      nzWidth="50%"
+    >
+    
+    <form nz-form id='roleaddform' [formGroup]="addRolevalidateForm" (ngSubmit)="submitFormaddUser(addRolevalidateForm.value)">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>角色名称</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="正在校验..." [nzErrorTip]="userErrorTpl">
+          <input nz-input formControlName="roleName" placeholder="请输入用户名" />
+          <ng-template #userErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              请输入用户名
+            </ng-container>
+            <ng-container *ngIf="control.hasError('duplicated')">
+              用户名重复
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7">说明</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <input formControlName="comment" nz-input rows="2" placeholder="说明信息"/>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+    <div *nzModalFooter>
+      <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+      <button nz-button nzType="primary" type="submit" form="roleaddform" >提交</button>
+    </div>
+    </nz-modal>
+  </div>
+
+  <!-- 分配菜单弹框 -->
+  <div>
+    <nz-modal
+      [(nzVisible)]="disMenuisVisible"
+      nzTitle="分配菜单"
+      nzClosable='true'
+      nzFooter='ModalButtonOptions'
+      nzOkText=""
+      nzCancelText=""
+      (nzOnOk)="disMenuhandleOk()"
+      (nzOnCancel)="disMenuhandleCancel()"
+      nzWidth="30%"
+    >
+    
+    <nz-tree
+        style="margin-left: 15%;"
+        [nzShowLine]='true'
+        #nzTreeComponent
+        [nzData]="nodes"
+        nzCheckable
+        nzMultiple
+        [nzCheckedKeys]="defaultCheckedKeys"
+        [nzExpandedKeys]="defaultExpandedKeys"
+        (nzClick)="nzClick($event)"
+        (nzContextMenu)="nzClick($event)"
+        (nzCheckBoxChange)="nzCheck($event)"
+        (nzExpandChange)="nzCheck($event)"
+      >
+      </nz-tree>
+    <div *nzModalFooter>
+      <button nz-button nzType="default" (click)="disMenuhandleOk()">取消</button>
+      <button nz-button nzType="primary" type="submit" [disabled]="disabled" (click)="submitdisMenu()">提交</button>
+    </div>
+    </nz-modal>
+  </div>
+
+  <!-- 分配权限弹框 -->
+  <div>
+    <nz-modal
+      [(nzVisible)]="disJurisVisible"
+      nzTitle="分配权限"
+      nzClosable='true'
+      nzFooter='ModalButtonOptions'
+      nzOkText=""
+      nzCancelText=""
+      (nzOnOk)="disJurhandleOk()"
+      (nzOnCancel)="disJurhandleCancel()"
+      nzWidth="50%"
+    >
+    <nz-transfer
+        style="margin-left: 15%;"
+        [nzListStyle]="{ 'width.px': 300, 'height.px': 300 }"
+        [nzDataSource]="translist"
+        nzShowSearch
+        [nzFilterOption]="filterOption"
+        (nzSearchChange)="search($event)"
+        (nzSelectChange)="select($event)"
+        (nzChange)="change($event)"
+      >
+      </nz-transfer>
+    <div *nzModalFooter>
+      <button nz-button nzType="default" (click)="disJurhandleOk()">取消</button>
+      <button nz-button nzType="primary" type="submit" [disabled]="disJurdisabled" (click)="submitdisJur()">提交</button>
+    </div>
+    </nz-modal>
+  </div>
+
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <ul nz-menu nzSelectable>
+      <li nz-menu-item (click)="disMenu()">分配菜单</li>
+      <li nz-menu-item (click)="disJur()">分配权限</li>
+    </ul>
+  </nz-dropdown-menu>
+</nz-spin>

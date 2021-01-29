@@ -8,6 +8,7 @@ import { FiterCodeLengthPipePipe }  from '../../../../services/parameterservice/
 
 import { ParameterserviceService } from '../../../../services/parameterservice/parameterservice.service';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { TransferItem } from 'ng-zorro-antd/transfer';
 
 
 @Component({
@@ -21,7 +22,18 @@ export class UserComponent implements OnInit {
 
   listOfData:any=[];
 
-  rolelist: Array<{ roleName: string; roleId: string }> = [];
+  //穿梭组件数据源集合
+  translist: TransferItem[] = [];
+  //穿梭组件已选择数据集合
+  transarray:Array<String>=[];
+
+  //分配角色弹窗状态
+  disRoleisVisible = false;
+  //分配角色提交按钮状态
+  disRoledisabled:any='disabled';
+
+  //加载状态
+  isSpinning = false;
   
   genderlist: Array<{ userStateName: string; userStateId: any }> = [
     {
@@ -34,7 +46,12 @@ export class UserComponent implements OnInit {
     }
   ];
 
-  //genderstate : 0;
+  validateForm!: FormGroup;
+
+  addUservalidateForm:  FormGroup;
+
+  //记录其他操作roleid
+  private userId:string='';
 
   userlist:any={
     userName: "",
@@ -53,17 +70,6 @@ export class UserComponent implements OnInit {
   private userReData:any={};
 
   private userfindurl:string=this.par_url.getAppUrl('/userfindname');
-
-  validateForm!: FormGroup;
-  addUservalidateForm:  FormGroup;
-
-  //displayData: ItemData[] = [];
-
-  //当前页面展示数据改变的回调函数
-  /* currentPageDataChange($event): void {
-    //this.displayData = $event;
-    //console.log($event);
-  } */
 
   //页数改变时的回调函数
   pageSizeChange($event){
@@ -115,7 +121,6 @@ export class UserComponent implements OnInit {
       userPhone : ['', [Validators.required], [this.validateUserPhone]],
       comment: [''],
       gender: ['',[Validators.required]],
-      role:['',[Validators.required]]
     });
   }
 
@@ -131,7 +136,6 @@ export class UserComponent implements OnInit {
   userFromList(){
     this.par_url.Parameter_Post(this.par_url.getAppUrl('/userlist'),this.userlist).subscribe((data)=>{
       this.userReData = data;
-      console.log(this.userReData)
       if(this.userReData.flag==true){
         if(this.userReData.data==null){
           this.userlist.pageindex = 0;
@@ -144,6 +148,9 @@ export class UserComponent implements OnInit {
         }
       }else{
         //弹出失败消息提示-及原因
+        this.userlist.pageindex = 0;
+        this.userlist.total = 0;
+        this.listOfData = [];
       }
     });
   }
@@ -159,7 +166,6 @@ export class UserComponent implements OnInit {
 
   adduser(): void {
     this.isVisible = true;
-    this.getRolelist();
   }
   handleOk(): void {
     this.isVisible = false;
@@ -175,21 +181,18 @@ export class UserComponent implements OnInit {
   }
 
   //新增-修改用户form
-  submitFormaddUser(value: { userName: string; email: string; password: string; confirm: string; comment: string ;role :string; gender: string; userPhone: string}): void {
+  submitFormaddUser(value: { userName: string; email: string; password: string; confirm: string; comment: string ; gender: string; userPhone: string}): void {
     var userJson={
       userId : this.initialUserDataid,//id
-      userName : value.userName,//账号
-      userPass : value.password,//用户密码
-      nickName : value.userName,//用户名称
-      userInfo : value.comment,//用户信息说明
-      roleId : value.role,//角色id
-      userPhone :value.userPhone,//电话
-      userEmail : value.email,//邮箱
-      userState : value.gender//禁用状态
+      username : value.userName,//账号
+      password : value.password,//用户密码
+      userExplain : value.comment,//用户信息说明
+      phoneNumber :value.userPhone,//电话
+      email : value.email,//邮箱
+      enabled : value.gender//禁用状态
     }
-    console.log(value.userName)
-    if(value.userName == '' || value.password == '' || value.role == '' || value.userPhone == '' || value.email == '' || value.gender == '' || value.confirm == ''){
-      this.message.create('error', `请检查录入信息`);
+    if(value.userName == '' || value.password == ''  || value.userPhone == '' || value.email == '' || value.gender == '' || value.confirm == ''){
+      this.message.create('warning', '请检查录入信息');
       return ;
     }
     //连接后端
@@ -229,7 +232,6 @@ export class UserComponent implements OnInit {
     new Observable((observer: Observer<ValidationErrors | null>) => {
       var valid_rule = /^(13[0-9]|14[5-9]|15[012356789]|166|17[0-8]|18[0-9]|19[8-9])[0-9]{8}$/;// 手机号码校验规则
       let phoneNumber = control.value;
-      //console.log(phoneNumber)
       setTimeout(() => {
         if(!valid_rule.test(phoneNumber)){
           observer.next({ error: true, required: true });
@@ -246,7 +248,7 @@ export class UserComponent implements OnInit {
     new Observable((observer: Observer<ValidationErrors | null>) => {
       this.userName.userName=control.value;
       setTimeout(() => {
-        this.par_url.Parameter_Post(this.userfindurl,this.userName).subscribe((data)=>{
+        this.par_url.Parameter_Get(this.userfindurl,"username="+control.value).subscribe((data)=>{
           this.userReData = data;
           if(this.userReData.flag==false){
             observer.next({ error: true, duplicated: true });
@@ -272,13 +274,9 @@ export class UserComponent implements OnInit {
       //this.addUservalidateForm
     }
 
-    roleChange(value: string){
-      //console.log(value)
-    }
-
     //删除用户
     delUser(userid:string){
-      this.par_url.Parameter_Post(this.par_url.getAppUrl('/deluser'),userid).subscribe((data)=>{
+      this.par_url.Parameter_Get(this.par_url.getAppUrl('/deluser'),"userid="+userid).subscribe((data)=>{
         this.userReData = data;
         if(this.userReData.flag==true){
           this.message.create('success', `删除用户信息成功`);
@@ -292,23 +290,21 @@ export class UserComponent implements OnInit {
     //编辑--查看
     userFind(userid:string){
       //获取用户数据并反显
-      this.par_url.Parameter_Get(this.par_url.getAppUrl('/userfind'),'username='+userid).subscribe((data)=>{
+      this.par_url.Parameter_Get(this.par_url.getAppUrl('/userfind'),'userid='+userid).subscribe((data)=>{
         this.userReData = data;
         if(this.userReData.flag==true){
-          this.getRolelist();
           //显示弹出层并给--initialUserData赋值
-          this.initialUserDataid = this.userReData.data.userId;
+          this.initialUserDataid = this.userReData.data.usergetone.userId;
           //测试代码块
           this.addUservalidateForm.patchValue(
             {
-              userName:this.userReData.data.userName,
-              userPhone:this.userReData.data.userPhone,
-              email:this.userReData.data.userEmail,
-              password:this.userReData.data.userPass,
-              confirm:this.userReData.data.userPass,
-              comment:this.userReData.data.userInfo,
-              gender:this.userReData.data.userState,
-              role:this.userReData.data.roleId, 
+              userName:this.userReData.data.usergetone.username,
+              userPhone:this.userReData.data.usergetone.phoneNumber,
+              email:this.userReData.data.usergetone.email,
+              password:this.userReData.data.usergetone.password,
+              confirm:this.userReData.data.usergetone.password,
+              comment:this.userReData.data.usergetone.userExplain,
+              gender:this.userReData.data.usergetone.enabled,
             }
           )
           this.isVisible = true;
@@ -318,21 +314,85 @@ export class UserComponent implements OnInit {
       });
     }
 
-  //获取角色列表
-  getRolelist(){
-    this.par_url.Parameter_Post(this.par_url.getAppUrl('/rolelist'),'').subscribe((data)=>{
-      this.userReData = data;
-      if(this.userReData.flag==true){
-        for(let i = 0;i<this.userReData.data.length;i++){
-          this.rolelist.push({roleName : this.userReData.data[i].roleName,roleId : this.userReData.data[i].roleId});
-        }
-        //this.rolelist = this.userReData.data;
-        //关闭弹出层并显示消息提示
-      }else{
-        //弹出失败消息提示-及原因
-      }
-    });
-  }
 
+    //分配角色权限
+    submitdisRole(){
+      console.log(this.transarray)
+      var rolu = {
+        userid: this.userId,
+        roleuserarray: this.transarray
+      }
+      this.par_url.Parameter_Post(this.par_url.getAppUrl('/roleusersub'),rolu).subscribe((data)=>{
+        this.userReData = data;
+        if(this.userReData.flag == true){
+          this.message.create('success', this.userReData.message);
+          //关闭弹出层
+          this.disRoleisVisible = false;
+        }else{
+          this.message.create('error', this.userReData.message);
+        }
+      })
+    }
+
+    disRolehandleOk(): void {
+      this.translist = [];
+      this.disRoleisVisible = false;
+      this.userId = '';
+    }
+    disRolehandleCancel(): void {//
+      this.translist = [];
+      this.disRoleisVisible = false;
+      this.userId = '';
+    }
+    
+    distuserrole(userId:string){
+      this.userId = userId
+      var rolu = {
+        userid: this.userId
+      }
+      this.par_url.Parameter_Post(this.par_url.getAppUrl('/userroletrans'),rolu).subscribe((data)=>{
+        this.userReData = data;
+        if(this.userReData.flag ==true){
+          this.translist = this.userReData.data;
+          for(let i=0;i<this.userReData.data.length;i++){
+            if(this.userReData.data[i].direction == 'right'){
+              this.transarray.push(this.userReData.data[i].key);
+            }
+          }
+          this.disRoleisVisible = true;
+        }
+      })
+    }
+
+
+    filterOption(inputValue: string, item: any): boolean {
+      return item.title.indexOf(inputValue) > -1;
+    }
+  
+    search(ret: {}): void {
+      //console.log('nzSearchChange', ret);
+    }
+  
+    select(ret: {}): void {
+      //console.log('nzSelectChange', ret);
+    }
+  
+    change(ret: {'from':'',list:[{'checked':'','direction':'','hide':'','title':'','key':''}],'to':''}): void {
+      //this.transarray = [];
+      if(ret.to.valueOf()=='right'){
+        for(let i=0;i<ret.list.length;i++){
+          this.transarray.push(ret.list[i].key)
+        }
+      }
+      if(ret.to.valueOf()=='left'){
+        for(let i=0;i<ret.list.length;i++){
+          var indexval = this.transarray.indexOf(ret.list[i].key);
+          this.transarray.splice(indexval,indexval);
+        }
+      }
+      this.disRoledisabled = 'false';
+    }
+
+  
 
 }

@@ -7,7 +7,6 @@ import { ParameterserviceService } from '../../services/parameterservice/paramet
 import { LoginserviceService } from '../../services/loginservice.service';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { throwError } from 'rxjs';
-import { catchError, map, retry, tap } from 'rxjs/operators';
 
 
 @Component({
@@ -18,6 +17,8 @@ import { catchError, map, retry, tap } from 'rxjs/operators';
 export class MenuComponent implements OnInit{
   
   isCollapsed = false;
+
+  isSpinning = false;
 
   private menuapi:string="";
 
@@ -64,7 +65,6 @@ export class MenuComponent implements OnInit{
       }
     }); */
     this.par_uarl.NoVal_Get(this.menuapi).subscribe((data)=>{//,this.data
-      console.log(data)
       this.menudata = data;
       if(this.menudata.flag==true){
         this.menulist = this.menudata.data;
@@ -75,8 +75,11 @@ export class MenuComponent implements OnInit{
   }
 
   loginOut(){
+    this.par_uarl.deltUserKey('token');
+    this.router.navigate(['/login']);
+    this.message.create('success', "退出成功返回登录");
     //this.createMessage('success');
-    var loginout_api = this.par_uarl.getAppUrl('/loginOut');
+    /* var loginout_api = this.par_uarl.getAppUrl('/loginOut');
     this.loginsev.logOut(loginout_api,this.par_uarl.getUserKey('uuid')).subscribe((data)=>{
       this.logOutdata = data;
       if(this.logOutdata.flag==true){
@@ -86,7 +89,7 @@ export class MenuComponent implements OnInit{
       }else{
         this.createMessage('error');
       }
-    });
+    }); */
   }
 
   createMessage(type: string): void {
@@ -101,6 +104,10 @@ export class MenuComponent implements OnInit{
         this.message.create(type, `警告`);
         break;
     }
+  }
+
+  refresh(){
+    window.location.reload();
   }
   /* menuclick(e){
     switch (e.toElement.innerText) {
