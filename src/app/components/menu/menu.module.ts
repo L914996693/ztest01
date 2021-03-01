@@ -4,15 +4,14 @@ import { CommonModule } from '@angular/common';
 import { NzIconService } from 'ng-zorro-antd/icon';
 
 import { MenuRoutingModule } from './menu-routing.module';
-import { UserlistComponent } from './user/userlist/userlist.component';
-import { TableComponent } from './table/table.component';
 import { UserComponent } from './permissionsetting/user/user.component';
 import { RoleComponent } from './permissionsetting/role/role.component';
 import { MenumComponent } from './permissionsetting/menum/menum.component';
+import { HomeComponent } from './permissionsetting/home/home.component';
 
 
 @NgModule({
-  declarations: [UserlistComponent, TableComponent, UserComponent, RoleComponent, MenumComponent],
+  declarations: [ UserComponent, RoleComponent, MenumComponent, HomeComponent],
   imports: [
     CommonModule,
     MenuRoutingModule

@@ -15,7 +15,8 @@ const routes: Routes = [
     children:[
       { path: 'user',data:{breadcrumb: '系统用户'} ,runGuardsAndResolvers: 'always', loadChildren: () => import('./components/menu/permissionsetting/user/user.module').then(m => m.UserModule) },//canActivate:[AuthGuard] ,
       { path: 'role',data:{breadcrumb: '系统角色'} ,runGuardsAndResolvers: 'always', loadChildren: () => import('./components/menu/permissionsetting/role/role.module').then(m => m.RoleModule) },//canActivate:[AuthGuard] ,
-      { path: 'menum',data:{breadcrumb: '系统菜单'} ,runGuardsAndResolvers: 'always', loadChildren: () => import('./components/menu/permissionsetting/menum/menum.module').then(m => m.MenumModule) }
+      { path: 'menum',data:{breadcrumb: '系统菜单'} ,runGuardsAndResolvers: 'always', loadChildren: () => import('./components/menu/permissionsetting/menum/menum.module').then(m => m.MenumModule) },
+      { path: 'home',data:{breadcrumb: '首页'} ,runGuardsAndResolvers: 'always', loadChildren: () => import('./components/menu/permissionsetting/home/home.module').then(m => m.HomeModule) }
     ]
   },
 ];

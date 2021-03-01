@@ -10,7 +10,7 @@ import { ParameterserviceService } from '../../../../services/parameterservice/p
 @Component({
   selector: 'app-menum',
   templateUrl: './menum.component.html',
-  styleUrls: ['./menum.component.scss'],
+  styleUrls: ['./menum.component.css'],
   providers:[DatePipe]
 })
 export class MenumComponent implements OnInit {

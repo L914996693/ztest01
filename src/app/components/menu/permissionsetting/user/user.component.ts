@@ -14,7 +14,7 @@ import { TransferItem } from 'ng-zorro-antd/transfer';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss'],
+  styleUrls: ['./user.component.css'],
   providers:[DatePipe]
 })
 export class UserComponent implements OnInit {

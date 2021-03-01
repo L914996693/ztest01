@@ -18,7 +18,7 @@ interface ItemData {
 @Component({
   selector: 'app-role',
   templateUrl: './role.component.html',
-  styleUrls: ['./role.component.scss'],
+  styleUrls: ['./role.component.css'],
   providers:[DatePipe]
 })
 export class RoleComponent implements OnInit {
